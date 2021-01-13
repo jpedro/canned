@@ -3,7 +3,7 @@ package lib
 import (
     "fmt"
     "time"
-    // "errors"
+    "errors"
     "strings"
     "encoding/json"
     "io/ioutil"
@@ -85,9 +85,10 @@ func (can *Can) Save() error {
     chunks    := align(encrypted, 64)
     aligned   := strings.Join(chunks, "\n")
     strimed   := strim(aligned)
-    headed    := addHeaders(strimed)
+    headed    := addHeaders(aligned)
 
-    // fmt.Println(aligned)
+	strimed = strimed + "."
+	// fmt.Println(aligned)
     // fmt.Println(strimed)
     // fmt.Println(headed)
 
@@ -142,7 +143,56 @@ func (can *Can) SetItem(name string, value string) error {
     var item *Item
     item, err := NewItem(name, value)
     can.Items[name] = *item
-    // fmt.Println(can.Items)
 
     return err
+}
+
+func (can *Can) GetItem(name string) (*Item, error) {
+	item, exists := can.Items[name]
+	if exists != true {
+		return nil, errors.New("FUCK")
+	}
+
+    return &item, nil
+}
+
+func (can *Can) DelItem(name string) error {
+	delete(can.Items, name);
+
+    return nil
+}
+
+func (can *Can) AddTag(name string, tag string) bool {
+	item, err := can.GetItem(name)
+	if err != nil {
+		return false
+	}
+
+	if exists(item.Tags, tag) {
+		return false
+	}
+
+	item.Metadata.UpdatedAt = time.Now()
+	item.Tags = append(item.Tags, tag)
+	can.Items[name] = *item
+
+	return true
+}
+
+func (can *Can) DelTag(name string, tag string) bool {
+	item, err := can.GetItem(name)
+	if err != nil {
+		return false
+	}
+
+	if exists(item.Tags, tag) == false {
+		return false
+	}
+
+	item.Metadata.UpdatedAt = time.Now()
+	item.Tags = remove(item.Tags, tag)
+	can.Items[name] = *item
+	// fmt.Println(can)
+
+	return true
 }

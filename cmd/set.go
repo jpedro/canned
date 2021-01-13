@@ -12,16 +12,18 @@ var setCmd = &cobra.Command{
     Short: "Sets a new item",
     Args: cobra.MinimumNArgs(2),
     Run: func(cmd *cobra.Command, args []string) {
-		name := args[0]
-		value := args[1]
-		fmt.Printf("==> Setting %s: %s\n", name, value)
-		can, err := lib.Open(CAN_FILE)
-		if err != nil {
-			panic(err)
-		}
+        name := args[0]
+        value := args[1]
 
-		can.SetItem(name, value)
-		can.Save()
+		can, err := lib.Open(CAN_FILE)
+        if err != nil {
+            panic(err)
+        }
+
+        can.SetItem(name, value)
+        can.Save()
+
+		fmt.Printf("==> Item %s saved.\n", paint("green", name))
     },
 }
 

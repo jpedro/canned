@@ -1,7 +1,7 @@
 package cmd
 
 import (
-    // "log"
+    "fmt"
     "os"
     "os/user"
     "strings"
@@ -36,4 +36,9 @@ func expand(path string) string {
     }
 
     return path
+}
+
+func bail(format string, msg ...interface{}) {
+	fmt.Printf(format, msg...)
+	os.Exit(1)
 }

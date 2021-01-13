@@ -26,3 +26,23 @@ func align(text string, size int) []string {
 func strim(text string) string {
     return strings.Replace(text, "\n", "", -1)
 }
+
+func exists(list []string, search string) bool {
+    for _, val := range list {
+        if val == search {
+            return true
+        }
+    }
+
+	return false
+}
+
+func remove(list []string, search string) ([]string) {
+	for index, value := range list {
+		if value == search {
+			return append(list[:index], list[index + 1:]...)
+		}
+	}
+
+	return list
+}
