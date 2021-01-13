@@ -37,3 +37,12 @@ func expand(path string) string {
 
     return path
 }
+
+// func flatten(text []string) string {
+// 	var flat string
+// 	for val := range text {
+// 		flat = fmt.Sprintf("%s%s,\n", flat, val)
+// 	}
+
+// 	return flat
+// }

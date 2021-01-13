@@ -22,17 +22,34 @@ type Can struct {
 
 func Open(file string) *Can {
     can := &Can{}
-    can.File = file
-    fmt.Printf("Opening %v...\n", can.File)
+	can.File = file
+	can.Parse()
+    // fmt.Printf("Opening %v...\n", can.File)
 
     return can
+}
+
+func (can *Can) Parse() {
+    data, err := ioutil.ReadFile(can.File + ".json")
+    if err != nil {
+        panic("Couldn't read json file.")
+    }
+
+    err = json.Unmarshal(data, &can)
+    if err != nil {
+        panic("Couldn't decoded can file.")
+	}
+
+	// fmt.Println(can.Version)
+	// fmt.Println(can.Metadata)
+	// fmt.Println(can.Items)
 }
 
 func Init(file string) *Can {
     can := Create(file)
     can.Metadata.CreatedAt = time.Now()
-    item := NewItem("test", "123")
     can.Items = make(map[string]Item)
+    item := NewItem("test", "123")
     can.Items["test"] = *item
     can.Save()
 
@@ -59,8 +76,10 @@ func (can *Can) Save() {
 	chunks    := align(encrypted, 64)
 	aligned   := strings.Join(chunks, "\n")
 	unaligned := unalign(aligned)
+	headed    := addHeaders(aligned)
 	fmt.Println(aligned)
 	fmt.Println(unaligned)
+	fmt.Println(headed)
 
 	err = ioutil.WriteFile(can.File, []byte(encrypted), 0644)
     if err != nil {
@@ -104,4 +123,34 @@ func align(text string, size int) []string {
 
 func unalign(text string) string {
 	return strings.Replace(text, "\n", "", -1)
+}
+
+func addHeaders(text string) string {
+	headers := make(map[string]string)
+	headers["version"] = "v1"
+	var header string
+	for key, val := range headers {
+		header = fmt.Sprintf("%s%s: %s\n", header, key, val)
+	}
+
+	return fmt.Sprintf("%s\n%s", header, text)
+}
+
+func chopHeaders(text string) (string, string) {
+	headers := make(map[string]string)
+	headers["version"] = "v1"
+	var header string
+	for key, val := range headers {
+		header = fmt.Sprintf("%s%s: %s\n", header, key, val)
+	}
+
+	return fmt.Sprintf("%s\n%s", header, text), "a"
+}
+
+func (can *Can) SetItem(name string, value string) error {
+	item := NewItem(name, value)
+	can.Items[name] = *item
+	fmt.Println(can.Items)
+
+	return nil
 }
