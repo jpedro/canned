@@ -84,12 +84,10 @@ func (can *Can) Save() error {
     encrypted := Encrypt(string(data), "pp")
     chunks    := align(encrypted, 64)
     aligned   := strings.Join(chunks, "\n")
-    strimed   := strim(aligned)
     headed    := addHeaders(aligned)
 
-	strimed = strimed + "."
 	// fmt.Println(aligned)
-    // fmt.Println(strimed)
+    // fmt.Println(strim(aligned))
     // fmt.Println(headed)
 
     err = ioutil.WriteFile(can.File, []byte(headed), 0644)
