@@ -11,7 +11,7 @@ type Item struct {
     Tags        []string    `json:"tags"`
 }
 
-func NewItem(name string, value string) *Item {
+func NewItem(name string, value string) (*Item, error) {
     item := &Item{}
     item.Name = name
     item.Value = value
@@ -19,5 +19,5 @@ func NewItem(name string, value string) *Item {
     // item.UpdatedAt = time.Time{}
     item.Tags = []string{}
 
-    return item
+    return item, nil
 }

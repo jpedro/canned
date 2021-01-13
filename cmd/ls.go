@@ -14,7 +14,11 @@ var lsCmd = &cobra.Command{
 	Use:   "ls",
 	Short: "Shows all secrets",
 	Run: func(cmd *cobra.Command, args []string) {
-		can := lib.Open(CAN_FILE)
+		can, err := lib.Open(CAN_FILE)
+		if err != nil {
+			panic(err)
+		}
+
 		canList(can)
 	},
 }

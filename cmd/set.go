@@ -15,7 +15,11 @@ var setCmd = &cobra.Command{
 		name := args[0]
 		value := args[1]
 		fmt.Printf("==> Setting %s: %s\n", name, value)
-		can := lib.Open(CAN_FILE)
+		can, err := lib.Open(CAN_FILE)
+		if err != nil {
+			panic(err)
+		}
+
 		can.SetItem(name, value)
 		can.Save()
     },
