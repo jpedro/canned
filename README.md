@@ -22,3 +22,7 @@ func main() {
     fmt.Printf("Item content: %s\n", item.Content)
 }
 ```
+
+## CLI
+
+Check [cli/canned](cli/canned)) for its usage.

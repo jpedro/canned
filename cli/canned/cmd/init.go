@@ -12,6 +12,7 @@ var initCmd = &cobra.Command{
     Short: "Initializes a new can file",
     Run: func(cmd *cobra.Command, args []string) {
         fmt.Printf("Will initialize file %v.\n", paint("green", CAN_FILE))
+		ensurePassword()
         _, err := canned.InitCan(CAN_FILE, CAN_PASSWORD)
         if err != nil {
             panic(err)

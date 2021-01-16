@@ -10,6 +10,7 @@ var tagLsCmd = &cobra.Command{
     Use:   "ls",
     Short: "Lists all used tags",
     Run: func(cmd *cobra.Command, args []string) {
+		ensurePassword()
         fmt.Println("==> TODO: tag ls")
     },
 }

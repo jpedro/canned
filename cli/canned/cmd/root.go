@@ -4,6 +4,8 @@ import (
     "fmt"
     "os"
     "strconv"
+    "bufio"
+    "strings"
 
     "github.com/spf13/cobra"
 )
@@ -74,4 +76,21 @@ func init() {
     CAN_FILE        = env("CAN_FILE", CAN_FILES[0])
     CAN_PASSWORD    = env("CAN_PASSWORD", "")
     CAN_VERBOSE, _  = strconv.ParseBool(env("CAN_VERBOSE", "false"))
+}
+
+func ensurePassword() {
+    if CAN_PASSWORD != "" {
+        return
+    }
+
+    fmt.Printf("Enter the password: ")
+    reader := bufio.NewReader(os.Stdin)
+    pass, _ := reader.ReadString('\n')
+    pass = strings.TrimSpace(pass)
+    if pass == "" {
+        fmt.Println("Error: Password can't be empty.")
+        os.Exit(1)
+    }
+    CAN_PASSWORD = pass
+
 }

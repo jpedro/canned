@@ -12,6 +12,7 @@ var rmCmd = &cobra.Command{
     Short: "Removes an item",
     Args: cobra.MinimumNArgs(1),
     Run: func(cmd *cobra.Command, args []string) {
+		ensurePassword()
         name := args[0]
         can, err := canned.OpenCan(CAN_FILE, CAN_PASSWORD)
         if err != nil {

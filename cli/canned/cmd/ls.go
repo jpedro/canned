@@ -14,6 +14,7 @@ var lsCmd = &cobra.Command{
     Use:   "ls",
     Short: "Shows all secrets",
     Run: func(cmd *cobra.Command, args []string) {
+		ensurePassword()
         can, err := canned.OpenCan(CAN_FILE, CAN_PASSWORD)
         if err != nil {
             panic(err)

@@ -12,6 +12,7 @@ var setCmd = &cobra.Command{
     Short: "Sets a new item",
     Args: cobra.MinimumNArgs(2),
     Run: func(cmd *cobra.Command, args []string) {
+		ensurePassword()
         name := args[0]
         value := args[1]
 

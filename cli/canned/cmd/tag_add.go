@@ -12,6 +12,7 @@ var tagAddCmd = &cobra.Command{
     Short: "Adds TAG to NAME",
     Args: cobra.MinimumNArgs(2),
     Run: func(cmd *cobra.Command, args []string) {
+		ensurePassword()
         tag  := args[0]
         name := args[1]
 

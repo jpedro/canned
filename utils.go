@@ -5,6 +5,7 @@ import (
     "strings"
 )
 
+// Splits a text into an aligned column of text
 func align(text string, size int) []string {
     var chunks []string
     runes := []rune(text)
@@ -24,10 +25,12 @@ func align(text string, size int) []string {
     return chunks
 }
 
+// Strips a string from line linux endings
 func strip(text string) string {
     return strings.Replace(text, "\n", "", -1)
 }
 
+// Checks if an element exists in a list
 func exists(list []string, search string) bool {
     for _, val := range list {
         if val == search {
@@ -38,9 +41,10 @@ func exists(list []string, search string) bool {
     return false
 }
 
-func remove(list []string, search string) ([]string) {
+// Removes an element from a list
+func remove(list []string, element string) ([]string) {
     for index, value := range list {
-        if value == search {
+        if value == element {
             return append(list[:index], list[index + 1:]...)
         }
     }
@@ -48,6 +52,7 @@ func remove(list []string, search string) ([]string) {
     return list
 }
 
+// Appends headers to a text
 func addHeaders(text string) string {
     headers := make(map[string]string)
     headers["version"] = VERSION
@@ -60,6 +65,7 @@ func addHeaders(text string) string {
     return fmt.Sprintf("%s\n%s", header, text)
 }
 
+// Parses the headers and returns them and the payload
 func getHeaders(text string) (map[string]string, string) {
     index   := strings.Index(text, SEPARATOR)
     header  := text[0:index]
@@ -78,6 +84,7 @@ func getHeaders(text string) (map[string]string, string) {
     return headers, payload
 }
 
+// Ensures the password is not empty or errors
 func verifyPassword(password string) error {
     if password == "" {
         return fmt.Errorf("Password cannot be empty.")
