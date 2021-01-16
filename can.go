@@ -66,27 +66,27 @@ func (can *Can) Save() error {
         return err
     }
 
-    err = ioutil.WriteFile(can.File + ".json", data, 0644)
-    if err != nil {
-        return err
-    }
+    // err = ioutil.WriteFile(can.File + ".json", data, 0644)
+    // if err != nil {
+    //     return err
+    // }
 
-    err = ioutil.WriteFile(can.File + ".yaml", dataY, 0644)
-    if err != nil {
-        return err
-    }
+    // err = ioutil.WriteFile(can.File + ".yaml", dataY, 0644)
+    // if err != nil {
+    //     return err
+    // }
 
-    var loaded *Can
-    err = json.Unmarshal(data, &loaded)
-    if err != nil {
-        return err
-    }
+    // var loaded *Can
+    // err = json.Unmarshal(data, &loaded)
+    // if err != nil {
+    //     return err
+    // }
 
-    var loadedY *Can
-    err = yaml.Unmarshal(dataY, &loadedY)
-    if err != nil {
-        return err
-    }
+    // var loadedY *Can
+    // err = yaml.Unmarshal(dataY, &loadedY)
+    // if err != nil {
+    //     return err
+    // }
 
     return nil
 }
