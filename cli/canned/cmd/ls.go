@@ -1,51 +1,52 @@
 package cmd
 
 import (
-    "fmt"
-    "time"
-    "strings"
+	"fmt"
+	"strings"
+	"time"
 
-    "github.com/jpedro/canned"
-    "github.com/spf13/cobra"
-    "github.com/jpedro/tablelize"
+	"github.com/jpedro/canned"
+	"github.com/jpedro/tablelize"
+	"github.com/spf13/cobra"
 )
 
 var lsCmd = &cobra.Command{
-    Use:   "ls",
-    Short: "Shows all secrets",
-    Run: func(cmd *cobra.Command, args []string) {
+	Use:   "ls",
+	Short: "Shows all secrets",
+	Run: func(cmd *cobra.Command, args []string) {
+		ensureFile()
 		ensurePassword()
-        can, err := canned.OpenCan(CAN_FILE, CAN_PASSWORD)
-        if err != nil {
-            panic(err)
-        }
+		can, err := canned.OpenCan(canFile, canPassword)
+		if err != nil {
+			panic(err)
+		}
 
-        list(can)
-    },
+		list(can)
+	},
 }
 
 func list(can *canned.Can) {
-    var data [][]string
+	var data [][]string
 
-    data = append(data, []string{"NAME", "LENGTH", "CREATED", "UPDATED", "TAGS"})
-    zero := time.Time{}
+	data = append(data, []string{"NAME", "LENGTH", "CREATED", "UPDATED", "TAGS"})
+	zero := time.Time{}
 
-    for key, item := range can.Items {
-        updated := ""
-        if item.Metadata.UpdatedAt != zero {
-            updated = item.Metadata.UpdatedAt.Format("2006-01-01")
-        }
+	for key, item := range can.Items {
+		updated := ""
+		if item.Metadata.UpdatedAt != zero {
+			updated = item.Metadata.UpdatedAt.Format("2006-01-01")
+		}
 
-        data = append(data, []string{
-            key,
-            fmt.Sprintf("%v", len(item.Content)),
-            item.Metadata.CreatedAt.Format("2006-01-01"),
-            updated,
-            strings.Join(item.Tags, " ")})
-    }
-    tablelize.Rows(data)
+		data = append(data, []string{
+			key,
+			fmt.Sprintf("%v", len(item.Content)),
+			item.Metadata.CreatedAt.Format("2006-01-01"),
+			updated,
+			strings.Join(item.Tags, " ")})
+	}
+	tablelize.Rows(data)
 }
 
 func init() {
-    rootCmd.AddCommand(lsCmd)
+	rootCmd.AddCommand(lsCmd)
 }

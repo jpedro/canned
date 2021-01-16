@@ -1,25 +1,34 @@
 package cmd
 
 import (
-    "fmt"
+	"fmt"
+	"os"
 
-    "github.com/jpedro/canned"
-    "github.com/spf13/cobra"
+	"github.com/jpedro/canned"
+	"github.com/spf13/cobra"
 )
 
 var initCmd = &cobra.Command{
-    Use:   "init",
-    Short: "Initializes a new can file",
-    Run: func(cmd *cobra.Command, args []string) {
-        fmt.Printf("Will initialize file %v.\n", paint("green", CAN_FILE))
+	Use:   "init",
+	Short: "Initializes a new can file",
+	Run: func(cmd *cobra.Command, args []string) {
 		ensurePassword()
-        _, err := canned.InitCan(CAN_FILE, CAN_PASSWORD)
-        if err != nil {
-            panic(err)
-        }
-    },
+
+		if _, err := os.Stat(canFile); err == nil {
+			if err != nil {
+				panic(err)
+			}
+		}
+
+		_, err := canned.InitCan(canFile, canPassword)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("Can initialized in file %s.\n", paint("green", canFile))
+	},
 }
 
 func init() {
-    rootCmd.AddCommand(initCmd)
+	rootCmd.AddCommand(initCmd)
+	initCmd.Flags().BoolP("force", "f", false, "Force the creation if the files exists.")
 }
