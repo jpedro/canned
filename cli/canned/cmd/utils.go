@@ -21,14 +21,13 @@ func env(name string, fallback string) string {
 }
 
 func paint(name string, text interface{}) string {
-    return color.Paint(name, text)
+    return color.Paint(name, fmt.Sprintf("%s", text))
 }
 
 func expand(path string) string {
     if USER_HOME == "" {
-        usr, _ := user.Current()
-        USER_HOME = usr.HomeDir
-        // log.Printf("==> Resolving %v.\n", USER_HOME)
+        current, _ := user.Current()
+        USER_HOME = current.HomeDir
     }
 
     if strings.HasPrefix(path, "~/") {
@@ -39,6 +38,8 @@ func expand(path string) string {
 }
 
 func bail(format string, msg ...interface{}) {
-	fmt.Printf(format, msg...)
-	os.Exit(1)
+    fmt.Println(format)
+    fmt.Println(msg...)
+    // fmt.Printf(format, msg...)
+    os.Exit(1)
 }

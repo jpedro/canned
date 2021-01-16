@@ -10,9 +10,9 @@ var statusCmd = &cobra.Command{
     Use:   "status",
     Short: "Shows the environment status",
     Run: func(cmd *cobra.Command, args []string) {
-        file := CAN_FILE
-        password := CAN_PASSWORD
-        verbose := CAN_VERBOSE
+        file      := CAN_FILE
+        password  := CAN_PASSWORD
+        verbose   := CAN_VERBOSE
         verbosity := ""
 
         if file == CAN_FILES[0] {
@@ -20,15 +20,17 @@ var statusCmd = &cobra.Command{
         } else {
             file = paint("yellow", file)
         }
+
         if password == "" {
             password = paint("pale", "(not set)")
         } else {
             password = paint("yellow", "****")
         }
-        if verbose == false {
-            verbosity = paint("pale", "false")
-        } else {
+
+        if verbose {
             verbosity = paint("yellow", "true")
+        } else {
+            verbosity = paint("pale", "false")
         }
 
         fmt.Printf("ENVIRONMENT\n")

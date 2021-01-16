@@ -2,8 +2,8 @@ package cmd
 
 import (
     "fmt"
-    "../lib"
 
+    "github.com/jpedro/can"
     "github.com/spf13/cobra"
 )
 
@@ -15,15 +15,22 @@ var setCmd = &cobra.Command{
         name := args[0]
         value := args[1]
 
-		can, err := lib.Open(CAN_FILE)
+        store, err := can.OpenStore(CAN_FILE)
         if err != nil {
             panic(err)
         }
 
-        can.SetItem(name, value)
-        can.Save()
+        err = store.SetItem(name, value)
+        if err != nil {
+            panic(err)
+        }
 
-		fmt.Printf("==> Item %s saved.\n", paint("green", name))
+        err = store.Save()
+        if err != nil {
+            panic(err)
+        }
+
+        fmt.Printf("==> Item %s saved.\n", paint("green", name))
     },
 }
 

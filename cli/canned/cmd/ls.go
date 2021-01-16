@@ -4,8 +4,8 @@ import (
     "fmt"
     "time"
     "strings"
-    "../lib"
 
+    "github.com/jpedro/can"
     "github.com/spf13/cobra"
     "github.com/jpedro/tablelize"
 )
@@ -14,22 +14,22 @@ var lsCmd = &cobra.Command{
     Use:   "ls",
     Short: "Shows all secrets",
     Run: func(cmd *cobra.Command, args []string) {
-        can, err := lib.Open(CAN_FILE)
+        store, err := can.OpenStore(CAN_FILE)
         if err != nil {
             panic(err)
         }
 
-        canList(can)
+        list(store)
     },
 }
 
-func canList(can *lib.Can) {
+func list(store *can.Store) {
     var data [][]string
 
     data = append(data, []string{"NAME", "LENGTH", "CREATED", "UPDATED", "TAGS"})
     zero := time.Time{}
 
-    for key, item := range can.Items {
+    for key, item := range store.Items {
         updated := ""
         if item.Metadata.UpdatedAt != zero {
             updated = item.Metadata.UpdatedAt.Format("2006-01-01")

@@ -2,8 +2,8 @@ package cmd
 
 import (
     "fmt"
-    "../lib"
 
+    "github.com/jpedro/can"
     "github.com/spf13/cobra"
     "github.com/atotto/clipboard"
 )
@@ -14,17 +14,21 @@ var getCmd = &cobra.Command{
     Args: cobra.MinimumNArgs(1),
     Run: func(cmd *cobra.Command, args []string) {
         name := args[0]
-        can, err := lib.Open(CAN_FILE)
+        store, err := can.OpenStore(CAN_FILE)
         if err != nil {
             panic(err)
         }
 
-        item, err := can.GetItem(name)
+        item, err := store.GetItem(name)
         if err != nil {
             panic(err)
         }
 
-        clipboard.WriteAll(item.Value)
+        err = clipboard.WriteAll(item.Content)
+        if err != nil {
+            panic(err)
+        }
+
         fmt.Printf("==> Item %s copied to the clipboard.\n", paint("green", name))
     },
 }

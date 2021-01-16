@@ -2,8 +2,8 @@ package cmd
 
 import (
     "fmt"
-    "../lib"
 
+    "github.com/jpedro/can"
     "github.com/spf13/cobra"
 )
 
@@ -13,20 +13,20 @@ var rmCmd = &cobra.Command{
     Args: cobra.MinimumNArgs(1),
     Run: func(cmd *cobra.Command, args []string) {
         name := args[0]
-        can, err := lib.Open(CAN_FILE)
+        store, err := can.OpenStore(CAN_FILE)
         if err != nil {
             panic(err)
         }
 
-        err = can.DelItem(name)
+        err = store.DelItem(name)
         if err != nil {
             panic(err)
-		}
+        }
 
-        err = can.Save()
+        err = store.Save()
         if err != nil {
             panic(err)
-		}
+        }
 
         fmt.Printf("==> Item %s removed.\n", paint("green", name))
     },
