@@ -67,14 +67,12 @@ func getHeaders(text string) (map[string]string, string) {
     payload := text[index + len(SEPARATOR):]
 
     parts := strings.Split(header, "\n")
-    for part := range parts {
-        line := parts[part]
-        // fmt.Printf("Part %d: %s.\n", part, line)
+    for part  := range parts {
+        line  := parts[part]
         colon := strings.Index(line, ":")
-        key := line[0:colon]
-        val := line[colon + 2:]
-        // fmt.Printf("Key=%s Value=%s.\n", key, val)
-        headers[key] = string(val)
+        key   := line[0:colon]
+        value := line[colon + 2:]
+        headers[key] = string(value)
     }
 
     return headers, payload

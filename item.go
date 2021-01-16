@@ -1,8 +1,7 @@
 package canned
 
 type Item struct {
-    // Name        string      `json:"name"`
-    Content     string      `json:"content"`
-    Metadata    Metadata    `json:"metadata"`
-    Tags        []string    `json:"tags"`
+    Content     string      `json:"content" yaml:"content"`
+    Metadata    Metadata    `json:"metadata" yaml:"metadata"`
+    Tags        []string    `json:"tags,omitempty" yaml:"tags,omitempty"`
 }

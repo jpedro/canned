@@ -8,14 +8,15 @@ import (
     "io/ioutil"
 
     "github.com/jpedro/crypto"
+    "gopkg.in/yaml.v2"
 )
 
 type Can struct {
-    File        string              `json:"-"`
-    Password    string              `json:"-"`
-    Version     string              `json:"version"`
-    Metadata    Metadata            `json:"metadata"`
-    Items       map[string]Item     `json:"items"`
+    File        string              `json:"-" yaml:"-"`
+    Password    string              `json:"-" yaml:"-"`
+    Version     string              `json:"version" yaml:"version"`
+    Metadata    Metadata            `json:"metadata" yaml:"metadata"`
+    Items       map[string]Item     `json:"items" yaml:"items"`
 }
 
 func (can *Can) Load() error {
@@ -28,7 +29,7 @@ func (can *Can) Load() error {
     striped := strip(payload)
     decrypted, err := crypto.Decrypt(striped, can.Password)
     if err != nil {
-        panic(err)
+        return err
     }
 
     err = json.Unmarshal([]byte(decrypted), &can)
@@ -42,6 +43,11 @@ func (can *Can) Load() error {
 
 func (can *Can) Save() error {
     data, err := json.MarshalIndent(can, "", "  ")
+    if err != nil {
+        return err
+    }
+
+    dataY, err := yaml.Marshal(can)
     if err != nil {
         return err
     }
@@ -65,8 +71,19 @@ func (can *Can) Save() error {
         return err
     }
 
+    err = ioutil.WriteFile(can.File + ".yaml", dataY, 0644)
+    if err != nil {
+        return err
+    }
+
     var loaded *Can
     err = json.Unmarshal(data, &loaded)
+    if err != nil {
+        return err
+    }
+
+    var loadedY *Can
+    err = yaml.Unmarshal(dataY, &loadedY)
     if err != nil {
         return err
     }

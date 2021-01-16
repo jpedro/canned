@@ -29,7 +29,7 @@ func NewItem(name string, content string) (*Item, error) {
     item := &Item{}
     item.Content = content
     item.Metadata.CreatedAt = time.Now()
-    item.Tags = []string{}
+    // item.Tags = []string{}
 
     return item, nil
 }
