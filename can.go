@@ -36,15 +36,6 @@ func (can *Can) Load() error {
         return err
     }
     can.Version = headers["version"]
-    // data, err := ioutil.ReadFile(can.File + ".json")
-    // if err != nil {
-    //     return err
-    // }
-
-    // err = json.Unmarshal(data, &can)
-    // if err != nil {
-    //     return err
-    // }
 
     return nil
 }

@@ -3,7 +3,7 @@ package cmd
 import (
     "fmt"
 
-    "github.com/jpedro/can"
+    "github.com/jpedro/canned"
     "github.com/spf13/cobra"
 )
 
@@ -15,7 +15,7 @@ var setCmd = &cobra.Command{
         name := args[0]
         value := args[1]
 
-        can, err := can.OpenCan(CAN_FILE, CAN_PASSWORD)
+        can, err := canned.OpenCan(CAN_FILE, CAN_PASSWORD)
         if err != nil {
             panic(err)
         }

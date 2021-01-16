@@ -11,6 +11,10 @@ const (
 )
 
 func NewCan(file string, password string) (*Can, error) {
+    if err := verifyPassword(password); err != nil {
+        return nil, err
+    }
+
     can := &Can{}
     can.File = file
     can.Password = password

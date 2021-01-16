@@ -79,3 +79,11 @@ func getHeaders(text string) (map[string]string, string) {
 
     return headers, payload
 }
+
+func verifyPassword(password string) error {
+    if password == "" {
+        return fmt.Errorf("Can password is required.")
+    }
+
+    return nil
+}
