@@ -8,7 +8,7 @@ import (
     "io/ioutil"
 
     "github.com/jpedro/crypto"
-    "gopkg.in/yaml.v2"
+    // "gopkg.in/yaml.v2"
 )
 
 type Can struct {
@@ -42,12 +42,8 @@ func (can *Can) Load() error {
 }
 
 func (can *Can) Save() error {
-    data, err := json.MarshalIndent(can, "", "  ")
-    if err != nil {
-        return err
-    }
-
-    dataY, err := yaml.Marshal(can)
+    // data, err := json.MarshalIndent(can, "", "  ")
+    data, err := json.Marshal(can)
     if err != nil {
         return err
     }
@@ -66,22 +62,23 @@ func (can *Can) Save() error {
         return err
     }
 
+    // dataY, err := yaml.Marshal(can)
+    // if err != nil {
+    //     return err
+    // }
     // err = ioutil.WriteFile(can.File + ".json", data, 0644)
     // if err != nil {
     //     return err
     // }
-
     // err = ioutil.WriteFile(can.File + ".yaml", dataY, 0644)
     // if err != nil {
     //     return err
     // }
-
     // var loaded *Can
     // err = json.Unmarshal(data, &loaded)
     // if err != nil {
     //     return err
     // }
-
     // var loadedY *Can
     // err = yaml.Unmarshal(dataY, &loadedY)
     // if err != nil {
