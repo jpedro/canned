@@ -11,6 +11,7 @@ import (
     // "gopkg.in/yaml.v2"
 )
 
+// Can struct
 type Can struct {
     File        string              `json:"-" yaml:"-"`
     Password    string              `json:"-" yaml:"-"`
@@ -19,6 +20,7 @@ type Can struct {
     Items       map[string]Item     `json:"items" yaml:"items"`
 }
 
+// Loads a can file into memory
 func (can *Can) Load() error {
     content, err := ioutil.ReadFile(can.File)
     if err != nil {
@@ -41,6 +43,7 @@ func (can *Can) Load() error {
     return nil
 }
 
+// Saves a can file
 func (can *Can) Save() error {
     // data, err := json.MarshalIndent(can, "", "  ")
     data, err := json.Marshal(can)
