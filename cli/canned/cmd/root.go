@@ -23,7 +23,7 @@ var CAN_FILES = []string{
 
 var rootCmd = &cobra.Command{
     Use:   "can",
-    Short: "Can cans secret goodies",
+    Short: "Can stores encrypted goodies",
     Run: func(cmd *cobra.Command, args []string) {
         usage(nil, []string{})
     },
@@ -55,14 +55,12 @@ func usage(cmd *cobra.Command, text []string) {
 
 GLOBAL OPTIONS
     -f, --file FILE          # Use a custom file
-    -n, --name NAME          # Use a custom name
     -v, --verbose            # Shows verbose output
 
 ENVIRONMENT VARIABLES
     CAN_FILE                 # Use this file instead of the default
-    CAN_NAME                 # Use this named file instead of the default
-    CAN_VERBOSE              # Turns verbosity on
     CAN_PASSWORD             # Use this password (avoids the password prompt)
+    CAN_VERBOSE              # Turns verbosity on
     CAN_AUTO_INIT            # Initializes the can file if it's not ready
     `)
 

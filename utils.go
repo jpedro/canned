@@ -80,7 +80,7 @@ func getHeaders(text string) (map[string]string, string) {
 
 func verifyPassword(password string) error {
     if password == "" {
-        return fmt.Errorf("Can password is required.")
+        return fmt.Errorf("Password cannot be empty.")
     }
 
     return nil

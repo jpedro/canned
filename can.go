@@ -103,7 +103,6 @@ func (can *Can) SetItem(name string, value string) error {
 func (can *Can) RenameItem(name string, new string) error {
     item, exists := can.Items[name]
     if !exists {
-        // return errors.New(fmt.Sprintf("Item %s doesn't exist.", name))
         return fmt.Errorf("Item %s doesn't exist.", name)
     }
 
@@ -117,7 +116,6 @@ func (can *Can) RenameItem(name string, new string) error {
 func (can *Can) GetItem(name string) (*Item, error) {
     item, exists := can.Items[name]
     if !exists {
-        // return nil, errors.New(fmt.Sprintf("Item %s doesn't exist.", name))
         return nil, fmt.Errorf("Item %s doesn't exist.", name)
     }
 
@@ -127,7 +125,6 @@ func (can *Can) GetItem(name string) (*Item, error) {
 func (can *Can) DelItem(name string) error {
     _, exists := can.Items[name]
     if !exists {
-        // return errors.New(fmt.Sprintf("Item %s doesn't exist.", name))
         return fmt.Errorf("Item %s doesn't exist.", name)
     }
 

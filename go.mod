@@ -9,5 +9,5 @@ require (
 	github.com/jpedro/crypto v0.0.0-20210115123251-5caf6a7c8dd6
 	github.com/jpedro/tablelize v0.0.0-20200306200702-e02a1f06bd6d
 	github.com/spf13/cobra v1.1.1
-	gopkg.in/yaml.v2 v2.2.8
+	gopkg.in/yaml.v2 v2.2.8 // indirect
 )
