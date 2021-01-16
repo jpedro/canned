@@ -1,4 +1,4 @@
-package can
+package canned
 
 import (
     "time"

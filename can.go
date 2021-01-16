@@ -1,9 +1,8 @@
-package can
+package canned
 
 import (
     "fmt"
     "time"
-    // "errors"
     "strings"
     "encoding/json"
     "io/ioutil"
@@ -11,53 +10,71 @@ import (
     "github.com/jpedro/crypto"
 )
 
-type Store struct {
+type Can struct {
     File        string              `json:"-"`
+    Password    string              `json:"-"`
     Version     string              `json:"version"`
     Metadata    Metadata            `json:"metadata"`
     Items       map[string]Item     `json:"items"`
 }
 
-func (store *Store) Load() error {
-    data, err := ioutil.ReadFile(store.File + ".json")
+func (can *Can) Load() error {
+    content, err := ioutil.ReadFile(can.File)
     if err != nil {
         return err
     }
 
-    err = json.Unmarshal(data, &store)
+    headers, payload := getHeaders(string(content))
+    striped := strip(payload)
+    decrypted, err := crypto.Decrypt(striped, can.Password)
+    if err != nil {
+        panic(err)
+    }
+
+    err = json.Unmarshal([]byte(decrypted), &can)
     if err != nil {
         return err
     }
+    can.Version = headers["version"]
+    // data, err := ioutil.ReadFile(can.File + ".json")
+    // if err != nil {
+    //     return err
+    // }
+
+    // err = json.Unmarshal(data, &can)
+    // if err != nil {
+    //     return err
+    // }
 
     return nil
 }
 
-func (store *Store) Save() error {
-    data, err := json.MarshalIndent(store, "", "  ")
+func (can *Can) Save() error {
+    data, err := json.MarshalIndent(can, "", "  ")
     if err != nil {
         return err
     }
 
-    encrypted, err := crypto.Encrypt(string(data), "pp")
+    encrypted, err := crypto.Encrypt(string(data), can.Password)
     if err != nil {
         return err
     }
 
-    chunks    := align(encrypted, 64)
-    aligned   := strings.Join(chunks, "\n")
-    headed    := appendHeaders(aligned)
+    chunks  := align(encrypted, 64)
+    aligned := strings.Join(chunks, "\n")
+    headed  := addHeaders(aligned)
 
-    err = ioutil.WriteFile(store.File, []byte(headed), 0644)
+    err = ioutil.WriteFile(can.File, []byte(headed), 0644)
     if err != nil {
         return err
     }
 
-    err = ioutil.WriteFile(store.File + ".json", data, 0644)
+    err = ioutil.WriteFile(can.File + ".json", data, 0644)
     if err != nil {
         return err
     }
 
-    var loaded *Store
+    var loaded *Can
     err = json.Unmarshal(data, &loaded)
     if err != nil {
         return err
@@ -66,34 +83,34 @@ func (store *Store) Save() error {
     return nil
 }
 
-func (store *Store) SetItem(name string, value string) error {
+func (can *Can) SetItem(name string, value string) error {
     var item *Item
     item, err := NewItem(name, value)
     if err != nil {
         return err
     }
 
-    store.Items[name] = *item
+    can.Items[name] = *item
 
     return nil
 }
 
-func (store *Store) RenameItem(name string, new string) error {
-    item, exists := store.Items[name]
+func (can *Can) RenameItem(name string, new string) error {
+    item, exists := can.Items[name]
     if !exists {
         // return errors.New(fmt.Sprintf("Item %s doesn't exist.", name))
         return fmt.Errorf("Item %s doesn't exist.", name)
     }
 
     // item.Name = new
-    store.Items[new] = item
-    delete(store.Items, name)
+    can.Items[new] = item
+    delete(can.Items, name)
 
     return nil
 }
 
-func (store *Store) GetItem(name string) (*Item, error) {
-    item, exists := store.Items[name]
+func (can *Can) GetItem(name string) (*Item, error) {
+    item, exists := can.Items[name]
     if !exists {
         // return nil, errors.New(fmt.Sprintf("Item %s doesn't exist.", name))
         return nil, fmt.Errorf("Item %s doesn't exist.", name)
@@ -102,20 +119,20 @@ func (store *Store) GetItem(name string) (*Item, error) {
     return &item, nil
 }
 
-func (store *Store) DelItem(name string) error {
-    _, exists := store.Items[name]
+func (can *Can) DelItem(name string) error {
+    _, exists := can.Items[name]
     if !exists {
         // return errors.New(fmt.Sprintf("Item %s doesn't exist.", name))
         return fmt.Errorf("Item %s doesn't exist.", name)
     }
 
-    delete(store.Items, name);
+    delete(can.Items, name);
 
     return nil
 }
 
-func (store *Store) AddTag(name string, tag string) error {
-    item, err := store.GetItem(name)
+func (can *Can) AddTag(name string, tag string) error {
+    item, err := can.GetItem(name)
     if err != nil {
         return fmt.Errorf("Item %s doesn't exist.", name)
     }
@@ -126,13 +143,13 @@ func (store *Store) AddTag(name string, tag string) error {
 
     item.Metadata.UpdatedAt = time.Now()
     item.Tags = append(item.Tags, tag)
-    store.Items[name] = *item
+    can.Items[name] = *item
 
     return nil
 }
 
-func (store *Store) DelTag(name string, tag string) bool {
-    item, err := store.GetItem(name)
+func (can *Can) DelTag(name string, tag string) bool {
+    item, err := can.GetItem(name)
     if err != nil {
         return false
     }
@@ -143,7 +160,7 @@ func (store *Store) DelTag(name string, tag string) bool {
 
     item.Metadata.UpdatedAt = time.Now()
     item.Tags = remove(item.Tags, tag)
-    store.Items[name] = *item
+    can.Items[name] = *item
 
     return true
 }

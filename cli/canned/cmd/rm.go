@@ -13,17 +13,17 @@ var rmCmd = &cobra.Command{
     Args: cobra.MinimumNArgs(1),
     Run: func(cmd *cobra.Command, args []string) {
         name := args[0]
-        store, err := can.OpenStore(CAN_FILE)
+        can, err := can.OpenCan(CAN_FILE, CAN_PASSWORD)
         if err != nil {
             panic(err)
         }
 
-        err = store.DelItem(name)
+        err = can.DelItem(name)
         if err != nil {
             panic(err)
         }
 
-        err = store.Save()
+        err = can.Save()
         if err != nil {
             panic(err)
         }

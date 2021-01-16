@@ -15,17 +15,17 @@ var tagAddCmd = &cobra.Command{
         tag  := args[0]
         name := args[1]
 
-        store, err := can.OpenStore(CAN_FILE)
+        can, err := can.OpenCan(CAN_FILE, CAN_PASSWORD)
         if err != nil {
             panic(err)
         }
 
-        err = store.AddTag(name, tag)
+        err = can.AddTag(name, tag)
         if err != nil {
             bail("==> Tag %s was not added to %s.\n", paint("green", tag), paint("green", name))
         }
 
-        err = store.Save()
+        err = can.Save()
         if err != nil {
             bail("==> Failed to save file %s%s.\n", paint("green", CAN_FILE))
         }

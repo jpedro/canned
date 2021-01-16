@@ -1,8 +1,8 @@
-package can
+package canned
 
 import (
     "fmt"
-    // "strings"
+    "strings"
 )
 
 func align(text string, size int) []string {
@@ -24,9 +24,9 @@ func align(text string, size int) []string {
     return chunks
 }
 
-// func strip(text string) string {
-//     return strings.Replace(text, "\n", "", -1)
-// }
+func strip(text string) string {
+    return strings.Replace(text, "\n", "", -1)
+}
 
 func exists(list []string, search string) bool {
     for _, val := range list {
@@ -48,10 +48,10 @@ func remove(list []string, search string) ([]string) {
     return list
 }
 
-func appendHeaders(text string) string {
+func addHeaders(text string) string {
     headers := make(map[string]string)
-    headers["version"] = CAN_VERSION
-    headers["algorithm"] = CAN_ALGORITHM
+    headers["version"] = VERSION
+    headers["algorithm"] = ALGORITHM
     var header string
     for key, val := range headers {
         header = fmt.Sprintf("%s%s: %s\n", header, key, val)
@@ -60,13 +60,22 @@ func appendHeaders(text string) string {
     return fmt.Sprintf("%s\n%s", header, text)
 }
 
-// func splitHeaders(text string) ([]string, string) {
-//     headers := make(map[string]string)
-//     headers["version"] = VERSION
-//     var header string
-//     for key, val := range headers {
-//         header = fmt.Sprintf("%s%s: %s\n", header, key, val)
-//     }
+func getHeaders(text string) (map[string]string, string) {
+    index   := strings.Index(text, SEPARATOR)
+    header  := text[0:index]
+    headers := make(map[string]string)
+    payload := text[index + len(SEPARATOR):]
 
-//     return fmt.Sprintf("%s\n%s", header, text), "a"
-// }
+    parts := strings.Split(header, "\n")
+    for part := range parts {
+        line := parts[part]
+        // fmt.Printf("Part %d: %s.\n", part, line)
+        colon := strings.Index(line, ":")
+        key := line[0:colon]
+        val := line[colon + 2:]
+        // fmt.Printf("Key=%s Value=%s.\n", key, val)
+        headers[key] = string(val)
+    }
+
+    return headers, payload
+}

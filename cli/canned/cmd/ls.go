@@ -14,22 +14,22 @@ var lsCmd = &cobra.Command{
     Use:   "ls",
     Short: "Shows all secrets",
     Run: func(cmd *cobra.Command, args []string) {
-        store, err := can.OpenStore(CAN_FILE)
+        can, err := can.OpenCan(CAN_FILE, CAN_PASSWORD)
         if err != nil {
             panic(err)
         }
 
-        list(store)
+        list(can)
     },
 }
 
-func list(store *can.Store) {
+func list(can *can.Can) {
     var data [][]string
 
     data = append(data, []string{"NAME", "LENGTH", "CREATED", "UPDATED", "TAGS"})
     zero := time.Time{}
 
-    for key, item := range store.Items {
+    for key, item := range can.Items {
         updated := ""
         if item.Metadata.UpdatedAt != zero {
             updated = item.Metadata.UpdatedAt.Format("2006-01-01")

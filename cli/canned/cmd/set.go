@@ -15,17 +15,17 @@ var setCmd = &cobra.Command{
         name := args[0]
         value := args[1]
 
-        store, err := can.OpenStore(CAN_FILE)
+        can, err := can.OpenCan(CAN_FILE, CAN_PASSWORD)
         if err != nil {
             panic(err)
         }
 
-        err = store.SetItem(name, value)
+        err = can.SetItem(name, value)
         if err != nil {
             panic(err)
         }
 
-        err = store.Save()
+        err = can.Save()
         if err != nil {
             panic(err)
         }

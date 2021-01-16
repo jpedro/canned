@@ -7,27 +7,11 @@ import (
 )
 
 func main() {
-    can, err := canned.InitCan("example.can")
-    if err != nil {
-        panic(err)
-    }
+    can, _ := canned.InitCan("example.can", "pp")
+    can.SetItem("hello", "world")
+	can.Save()
 
-    name  := "hello"
-    value := "world"
-
-    err = can.SetItem(name, value)
-    if err != nil {
-        panic(err)
-    }
-    err = can.Save()
-    if err != nil {
-        panic(err)
-    }
-
-    item, err := can.GetItem(name)
-    if err != nil {
-        panic(err)
-    }
-
+	can2, _ := canned.OpenCan("example.can", "pp")
+    item, _ := can2.GetItem("hello")
     fmt.Printf("Item content: %s\n", item.Content)
 }

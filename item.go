@@ -1,4 +1,4 @@
-package can
+package canned
 
 type Item struct {
     // Name        string      `json:"name"`

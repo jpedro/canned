@@ -14,12 +14,12 @@ var getCmd = &cobra.Command{
     Args: cobra.MinimumNArgs(1),
     Run: func(cmd *cobra.Command, args []string) {
         name := args[0]
-        store, err := can.OpenStore(CAN_FILE)
+        can, err := can.OpenCan(CAN_FILE, CAN_PASSWORD)
         if err != nil {
             panic(err)
         }
 
-        item, err := store.GetItem(name)
+        item, err := can.GetItem(name)
         if err != nil {
             panic(err)
         }

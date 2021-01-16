@@ -8,9 +8,9 @@ import (
     "github.com/spf13/cobra"
 )
 
-var CAN_VERBOSE bool
-var CAN_PASSWORD string
-var CAN_FILE string
+var CAN_VERBOSE     bool
+var CAN_PASSWORD    string
+var CAN_FILE        string
 
 var CAN_DIRS = []string{
     expand("~/.config/can"),
@@ -23,19 +23,19 @@ var CAN_FILES = []string{
 
 var rootCmd = &cobra.Command{
     Use:   "can",
-    Short: "Can stores secret goodies",
+    Short: "Can cans secret goodies",
     Run: func(cmd *cobra.Command, args []string) {
         usage(nil, []string{})
     },
 }
 
 func Execute() error {
-	err := rootCmd.Execute()
-	if err != nil {
+    err := rootCmd.Execute()
+    if err != nil {
         os.Exit(1)
-	}
+    }
 
-	return nil
+    return nil
 }
 
 func usage(cmd *cobra.Command, text []string) {

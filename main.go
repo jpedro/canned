@@ -1,22 +1,24 @@
-package can
+package canned
 
 import (
     "time"
 )
 
 const (
-    CAN_VERSION   = "v1"
-    CAN_ALGORITHM = "GCM"
+    VERSION   = "v1"
+    ALGORITHM = "GCM"
+    SEPARATOR = "\n\n"
 )
 
-func NewStore(file string) (*Store, error) {
-    store := &Store{}
-    store.File = file
-    store.Version = CAN_VERSION
-    store.Metadata.CreatedAt = time.Now()
-    store.Items = make(map[string]Item)
+func NewCan(file string, password string) (*Can, error) {
+    can := &Can{}
+    can.File = file
+    can.Password = password
+    can.Version = VERSION
+    can.Metadata.CreatedAt = time.Now()
+    can.Items = make(map[string]Item)
 
-    return store, nil
+    return can, nil
 }
 
 func NewItem(name string, content string) (*Item, error) {
@@ -28,21 +30,23 @@ func NewItem(name string, content string) (*Item, error) {
     return item, nil
 }
 
-func OpenStore(file string) (*Store, error) {
-    store := &Store{}
-    store.File = file
-    err := store.Load()
+func OpenCan(file string, password string) (*Can, error) {
+    can, err := NewCan(file, password)
+    if err != nil {
+        return nil, err
+    }
+    err = can.Load()
 
-    return store, err
+    return can, err
 }
 
-func InitStore(file string) (*Store, error) {
-    store, err := NewStore(file)
+func InitCan(file string, password string) (*Can, error) {
+    can, err := NewCan(file, password)
     if err != nil {
         return nil, err
     }
 
-    err = store.Save()
+    err = can.Save()
 
-    return store, err
+    return can, err
 }
