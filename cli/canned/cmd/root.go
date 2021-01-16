@@ -91,6 +91,6 @@ func ensurePassword() {
         fmt.Println("Error: Password can't be empty.")
         os.Exit(1)
     }
-    CAN_PASSWORD = pass
 
+    CAN_PASSWORD = pass
 }
