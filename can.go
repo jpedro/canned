@@ -91,6 +91,7 @@ func (can *Can) Save() error {
     return nil
 }
 
+// Stores an item
 func (can *Can) SetItem(name string, value string) error {
     var item *Item
     item, err := NewItem(name, value)
@@ -103,6 +104,7 @@ func (can *Can) SetItem(name string, value string) error {
     return nil
 }
 
+// Renames an existing item
 func (can *Can) RenameItem(name string, new string) error {
     item, exists := can.Items[name]
     if !exists {
@@ -116,6 +118,7 @@ func (can *Can) RenameItem(name string, new string) error {
     return nil
 }
 
+// Gets an existing item
 func (can *Can) GetItem(name string) (*Item, error) {
     item, exists := can.Items[name]
     if !exists {
@@ -136,6 +139,7 @@ func (can *Can) DelItem(name string) error {
     return nil
 }
 
+// Appends a tag to an item
 func (can *Can) AddTag(name string, tag string) error {
     item, err := can.GetItem(name)
     if err != nil {
@@ -153,6 +157,7 @@ func (can *Can) AddTag(name string, tag string) error {
     return nil
 }
 
+// Removes a tag from an item
 func (can *Can) DelTag(name string, tag string) bool {
     item, err := can.GetItem(name)
     if err != nil {
