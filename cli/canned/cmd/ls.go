@@ -10,22 +10,35 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var lsCmd = &cobra.Command{
-	Use:   "ls",
-	Short: "Shows all secrets",
-	Run: func(cmd *cobra.Command, args []string) {
-		ensureFile()
-		ensurePassword()
-		can, err := canned.OpenCan(canFile, canPassword)
-		if err != nil {
-			panic(err)
-		}
-
-		list(can)
-	},
+type lsOptions struct {
+	output string
 }
 
-func list(can *canned.Can) {
+func newLsCommand() *cobra.Command {
+	options := lsOptions{}
+
+	cmd := &cobra.Command{
+		Use:   "ls",
+		Short: "Shows all secrets",
+		Run: func(cmd *cobra.Command, args []string) {
+			ensureFile()
+			ensurePassword()
+			can, err := canned.OpenCan(canFile, canPassword)
+			if err != nil {
+				panic(err)
+			}
+
+			listItems(can)
+		},
+	}
+
+	cmd.Flags().StringVarP(&options.output, "output", "o", "table", "The outout format")
+
+	return cmd
+
+}
+
+func listItems(can *canned.Can) {
 	var data [][]string
 
 	data = append(data, []string{"NAME", "LENGTH", "CREATED", "UPDATED", "TAGS"})
@@ -48,5 +61,5 @@ func list(can *canned.Can) {
 }
 
 func init() {
-	rootCmd.AddCommand(lsCmd)
+	rootCmd.AddCommand(newLsCommand())
 }

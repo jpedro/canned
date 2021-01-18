@@ -14,23 +14,21 @@ type initOptions struct {
 }
 
 func newInitCmd() *cobra.Command {
-	opt := initOptions{}
+	options := initOptions{}
 
 	cmd := &cobra.Command{
-		Use:   "init [OPTIONS]",
+		Use:   "init",
 		Short: "Initializes a new can file",
 		Run: func(cmd *cobra.Command, args []string) {
 			if canFile == "" {
 				canFile = canFiles[0]
 			}
-			// fmt.Println(canFile)
-			// fmt.Println(opt)
 
 			if _, err := os.Stat(canFile); err == nil {
-				if opt.force {
+				if options.force {
 					fmt.Printf("Overridding file file %s.\n", paint("green", canFile))
 				} else {
-					bail("File %s already exists. Use the '--force' flag to force a recreation.\n",
+					bail("File %s already exists. Use '--force' to overwrite that file.\n",
 						paint("green", canFile))
 				}
 			} else {
@@ -50,8 +48,7 @@ func newInitCmd() *cobra.Command {
 		},
 	}
 
-	flags := cmd.Flags()
-	flags.BoolVarP(&opt.force, "force", "", false, "Force an override if the current files exists")
+	cmd.Flags().BoolVarP(&options.force, "force", "", false, "Force an override if the current files exists")
 
 	return cmd
 }

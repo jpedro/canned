@@ -16,13 +16,13 @@ var (
 	canFile     string
 
 	canFiles = []string{
-		expand("~/.config/canned/default.can"),
+		expandHome("~/.config/canned/default.can"),
 		"/etc/canned/default.can",
 	}
 
 	rootCmd = &cobra.Command{
-		Use:   "can",
-		Short: "Can stores encrypted goodies",
+		Use:   "canned",
+		Short: "Canned stores encrypted goodies",
 		Run: func(cmd *cobra.Command, args []string) {
 			usage(nil, []string{})
 		},
@@ -58,10 +58,10 @@ GLOBAL OPTIONS
     -v, --verbose            # Shows verbose output
 
 ENVIRONMENT VARIABLES
-    canFile                 # Use this file instead of the default
-    canPassword             # Use this password (avoids the password prompt)
-    canVerbose              # Turns verbosity on
-    CAN_AUTO_INIT            # Initializes the can file if it's not ready
+    CAN_FILE                 # Use this file instead of the default
+    CAN_PASSWORD             # Use this password (avoids the password prompt)
+    CAN_VERBOSE              # Turns verbosity on
+    CAN_INIT_FORCE           # Forces a new can file even if the file already exists
     `)
 
 }
@@ -74,7 +74,6 @@ func init() {
 }
 
 func initConfig() {
-	// fmt.Println("inside initConfig")
 	canFile = env("CAN_FILE", "")
 	canPassword = env("CAN_PASSWORD", "")
 	canVerbose, _ = strconv.ParseBool(env("CAN_VERBOSE", "false"))

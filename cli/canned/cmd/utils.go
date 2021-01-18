@@ -26,7 +26,7 @@ func paint(name string, text interface{}) string {
 	return color.Paint(name, fmt.Sprintf("%s", text))
 }
 
-func expand(path string) string {
+func expandHome(path string) string {
 	if USER_HOME == "" {
 		current, _ := user.Current()
 		USER_HOME = current.HomeDir
