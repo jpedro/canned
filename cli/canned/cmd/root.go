@@ -84,14 +84,21 @@ func ensureFile() {
 	if canFile != "" {
 		info, err := os.Stat(canFile)
 		if os.IsNotExist(err) {
-			bail("Error: Can file %s does not exist.", paint("green", canFile))
+			bail("Error: The file %s does not exist.", paint("green", canFile))
 		} else if info.IsDir() {
-			bail("Error: Can file %s is a directory.", paint("green", canFile))
+			bail("Error: The file %s is a directory.", paint("green", canFile))
 		} else {
 			return
 		}
 	}
 
+	canFile = findNearestFile()
+	if canFile == "" {
+		bail("Error: Couldn't find a default can file. Use the '--file FILE' flag or set the 'CAN_FILE' env var to point to a valid can file.")
+	}
+}
+
+func findNearestFile() string {
 	for _, file := range canFiles {
 		info, err := os.Stat(file)
 		if os.IsNotExist(err) {
@@ -99,12 +106,11 @@ func ensureFile() {
 		} else if info.IsDir() {
 			// continue
 		} else {
-			canFile = file
-			return
+			return file
 		}
 	}
 
-	bail("Error: Couldn't find a default can file.")
+	return ""
 }
 
 func ensurePassword() {

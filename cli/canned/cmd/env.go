@@ -10,6 +10,7 @@ var envCmd = &cobra.Command{
 	Use:   "env",
 	Short: "Shows the environment status",
 	Run: func(cmd *cobra.Command, args []string) {
+		// ensureFile()
 		file := canFile
 		password := canPassword
 		verbose := canVerbose
@@ -17,6 +18,8 @@ var envCmd = &cobra.Command{
 
 		if file == canFiles[0] {
 			file = paint("pale", file)
+		} else if file == "" {
+			file = paint("pale", "(not set)")
 		} else {
 			file = paint("yellow", file)
 		}
