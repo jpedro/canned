@@ -7,35 +7,41 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var setCmd = &cobra.Command{
-	Use:   "set",
-	Short: "Sets a new item",
+var mvCmd = &cobra.Command{
+	Use:   "mv",
+	Short: "Renames an item",
 	Args:  cobra.MinimumNArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
 		ensureFile()
 		ensurePassword()
 		name := args[0]
-		value := args[1]
+		new := args[1]
+
+		if name == new {
+			bail("New name is the same as the current one.")
+		}
 
 		can, err := canned.OpenCan(canFile, canPassword)
 		if err != nil {
 			bail("%", err)
 		}
 
-		err = can.SetItem(name, value)
+		err = can.RenameItem(name, new)
 		if err != nil {
-			bail("%", err)
+			bail("%s", err)
 		}
 
 		err = can.Save()
 		if err != nil {
-			bail("%", err)
+			bail("%s", err)
 		}
 
-		fmt.Printf("Item %s stored.\n", paint("green", name))
+		fmt.Printf("Item %s renamed to %s.\n",
+			paint("green", name),
+			paint("green", new))
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(setCmd)
+	rootCmd.AddCommand(mvCmd)
 }

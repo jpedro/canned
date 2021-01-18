@@ -40,9 +40,7 @@ func expandHome(path string) string {
 }
 
 func bail(format string, msg ...interface{}) {
-	// fmt.Println(format)
-	// fmt.Println(msg...)
-	fmt.Printf(format, msg...)
+	fmt.Printf("Error: "+format, msg...)
 	if format[len(format)-1:] != "\n" {
 		fmt.Println("")
 	}

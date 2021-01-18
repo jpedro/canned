@@ -10,7 +10,7 @@ const (
 	SEPARATOR = "\n\n"
 )
 
-// Creates a new can in memory
+// Creates a new can object
 func NewCan(file string, password string) (*Can, error) {
 	if err := verifyPassword(password); err != nil {
 		return nil, err
@@ -26,7 +26,7 @@ func NewCan(file string, password string) (*Can, error) {
 	return can, nil
 }
 
-// Creates a new item in memory
+// Creates a new item object
 func NewItem(name string, content string) (*Item, error) {
 	item := &Item{}
 	item.Content = content
@@ -48,6 +48,7 @@ func OpenCan(file string, password string) (*Can, error) {
 }
 
 // Initializes a new can file
+// This will overwrite any existing file.
 func InitCan(file string, password string) (*Can, error) {
 	can, err := NewCan(file, password)
 	if err != nil {

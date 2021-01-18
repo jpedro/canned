@@ -19,23 +19,23 @@ var tagRmCmd = &cobra.Command{
 
 		can, err := canned.OpenCan(canFile, canPassword)
 		if err != nil {
-			panic(err)
+			bail("%", err)
 		}
 
 		ok := can.DelTag(name, tag)
 		if !ok {
-			bail("Error: Tag %s was not removed from %s.\n",
+			bail("Tag %s was not removed from %s.\n",
 				paint("green", tag),
 				paint("green", name))
 		}
 
 		err = can.Save()
 		if err != nil {
-			bail("==> Failed to save file %s.\n",
+			bail("Failed to save file %s.\n",
 				paint("green", canFile))
 		}
 
-		fmt.Printf("==> Tag %s removed from %s\n",
+		fmt.Printf("Tag %s removed from %s\n",
 			paint("green", tag),
 			paint("green", name))
 	},

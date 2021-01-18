@@ -17,17 +17,17 @@ var rmCmd = &cobra.Command{
 		name := args[0]
 		can, err := canned.OpenCan(canFile, canPassword)
 		if err != nil {
-			panic(err)
+			bail("%", err)
 		}
 
 		err = can.DelItem(name)
 		if err != nil {
-			panic(err)
+			bail("%", err)
 		}
 
 		err = can.Save()
 		if err != nil {
-			panic(err)
+			bail("%", err)
 		}
 
 		fmt.Printf("Item %s removed.\n", paint("green", name))
