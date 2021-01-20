@@ -1,5 +1,4 @@
 # Canned
-[![Build Status](https://action-badges.now.sh/jpedro/canned)](https://github.com/jpedro/canned/actions)
 [![Github Status](https://github.com/jpedro/canned/workflows/main/badge.svg)](https://github.com/jpedro/canned/actions)
 [![GoDoc](https://godoc.org/github.com/jpedro/canned?status.svg)](https://godoc.org/github.com/jpedro/canned)
 
