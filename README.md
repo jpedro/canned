@@ -1,4 +1,6 @@
 # Canned
+![Build Status](https://github.com/jpedro/canned/workflows/ci/badge.svg)
+![Build Status](https://action-badges.now.sh/jpedro/canned)
 
 Go library to store encrypted goods.
 
