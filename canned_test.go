@@ -14,7 +14,10 @@ import (
 )
 
 func TestInitCan(t *testing.T) {
-	_, err := InitCan("test.can", "test")
+	password := "test"
+	file := "test.can"
+
+	_, err := InitCan(file, password)
 	if err != nil {
 		panic(err)
 	}
@@ -22,4 +25,29 @@ func TestInitCan(t *testing.T) {
 	// if decrypted != text {
 	// 	t.Error("Expected", text, "got", decrypted)
 	// }
+}
+
+func TestOpenCan(t *testing.T) {
+	password := "test"
+	file := "test.can"
+	name := "test"
+	value := "test"
+
+	can, err := OpenCan(file, password)
+	if err != nil {
+		panic(err)
+	}
+
+	err = can.SetItem(name, value)
+	if err != nil {
+		panic(err)
+	}
+	item, err := can.GetItem(name)
+	if err != nil {
+		panic(err)
+	}
+
+	if item.Content != "test" {
+		t.Error("Expected", value, "got", item.Content)
+	}
 }

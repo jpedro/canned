@@ -7,11 +7,33 @@ import (
 )
 
 func main() {
-	can, _ := canned.InitCan("example.can", "pp")
-	can.SetItem("hello", "world")
-	can.Save()
+	password := "test"
+	file := "example.can"
 
-	can2, _ := canned.OpenCan("example.can", "pp")
-	item, _ := can2.GetItem("hello")
+	can, err := canned.InitCan(file, password)
+	if err != nil {
+		panic(err)
+	}
+
+	err = can.SetItem("hello", "world")
+	if err != nil {
+		panic(err)
+	}
+
+	err = can.Save()
+	if err != nil {
+		panic(err)
+	}
+
+	can2, err := canned.OpenCan(file, password)
+	if err != nil {
+		panic(err)
+	}
+
+	item, err := can2.GetItem("hello")
+	if err != nil {
+		panic(err)
+	}
+
 	fmt.Printf("Item content: %s\n", item.Content)
 }

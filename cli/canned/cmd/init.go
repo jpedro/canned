@@ -38,8 +38,12 @@ func newInitCmd() *cobra.Command {
 
 			ensurePassword()
 			dirName := filepath.Dir(canFile)
-			os.MkdirAll(dirName, 0700)
-			_, err := canned.InitCan(canFile, canPassword)
+			err := os.MkdirAll(dirName, 0700)
+			if err != nil {
+				panic(err)
+			}
+
+			_, err = canned.InitCan(canFile, canPassword)
 			if err != nil {
 				panic(err)
 			}
