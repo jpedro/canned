@@ -1,6 +1,6 @@
 # Canned
-![Build Status](https://github.com/jpedro/canned/workflows/ci/badge.svg)
 ![Build Status](https://action-badges.now.sh/jpedro/canned)
+[![GoDoc](https://godoc.org/github.com/jpedro/canned?status.svg)](https://godoc.org/github.com/jpedro/canned)
 
 Go library to store encrypted goods.
 
