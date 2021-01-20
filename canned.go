@@ -37,6 +37,7 @@ func NewItem(name string, content string) (*Item, error) {
 }
 
 // Opens a can file
+// If the file doesn't exist, it will fail to load
 func OpenCan(file string, password string) (*Can, error) {
 	can, err := NewCan(file, password)
 	if err != nil {

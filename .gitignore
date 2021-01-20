@@ -1,3 +1,4 @@
-/example/example.can*
-/cli/cannned/canned
 /vendor/
+/cli/cannned/canned
+*.can
+coverage.out
