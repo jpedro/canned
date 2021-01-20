@@ -1,4 +1,4 @@
-name: Test library
+name: main
 
 on:
 - push
