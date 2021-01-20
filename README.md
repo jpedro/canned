@@ -27,4 +27,4 @@ func main() {
 
 ## CLI
 
-Check [cli/canned](cli/canned) for its usage.
+Check [cli/canned](cli/canned) for your terminal needs.
