@@ -1,5 +1,5 @@
 # Canned
-![Build Status](https://action-badges.now.sh/jpedro/canned)
+[![Build Status](https://action-badges.now.sh/jpedro/canned)](https://github.com/jpedro/canned/actions)
 [![GoDoc](https://godoc.org/github.com/jpedro/canned?status.svg)](https://godoc.org/github.com/jpedro/canned)
 
 Go library to store encrypted goods.
