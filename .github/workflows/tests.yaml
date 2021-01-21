@@ -1,4 +1,4 @@
-name: main
+name: tests
 
 on:
 - push
@@ -26,12 +26,12 @@ jobs:
       run: |
         go test -v -covermode=count -coverprofile=coverage.out
 
-    - name: Run example
+    - name: Test the example
       run: |
         cd example
         go run main.go
 
-    - name: Run cli
+    - name: Test the cli
       run: |
         cd ~
         go get github.com/jpedro/canned/cli/canned
@@ -42,7 +42,7 @@ jobs:
         canned ls
         canned env
 
-    - name: Send slack notification
+    - name: Notify slack
       uses: 8398a7/action-slack@v3
       if: always()
       with:
