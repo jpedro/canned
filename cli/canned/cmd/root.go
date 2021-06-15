@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"bufio"
 	"fmt"
 	"os"
 	"strconv"
@@ -14,8 +13,7 @@ var (
 	canVerbose  bool
 	canPassword string
 	canFile     string
-
-	canFiles = []string{
+	canFiles    = []string{
 		expandHome("~/.config/canned/default.can"),
 		"/etc/canned/default.can",
 	}
@@ -117,14 +115,15 @@ func ensurePassword() {
 		return
 	}
 
-	fmt.Printf("Enter the password: ")
-	reader := bufio.NewReader(os.Stdin)
-	pass, _ := reader.ReadString('\n')
-	pass = strings.TrimSpace(pass)
-	if pass == "" {
+	password := askPassword("Enter the can password: ")
+	// fmt.Printf("Enter the password: ")
+	// reader := bufio.NewReader(os.Stdin)
+	// pass, _ := reader.ReadString('\n')
+	password = strings.TrimSpace(password)
+	if password == "" {
 		fmt.Println("Error: Password can't be empty.")
 		os.Exit(1)
 	}
 
-	canPassword = pass
+	canPassword = password
 }

@@ -8,4 +8,5 @@ require (
 	github.com/jpedro/crypto v0.0.0-20210124053230-fd553cfaa066
 	github.com/jpedro/tablelize v0.0.0-20200306200702-e02a1f06bd6d
 	github.com/spf13/cobra v1.1.3
+	golang.org/x/term v0.0.0-20210615171337-6886f2dfbf5b
 )
