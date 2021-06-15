@@ -1,4 +1,4 @@
-/vendor/
-/cli/cannned/canned
+/cli/canned/canned
 *.can
 coverage.out
+coverage.html
