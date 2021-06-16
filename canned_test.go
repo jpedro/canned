@@ -10,7 +10,6 @@
 package canned
 
 import (
-	"log"
 	"os"
 	"testing"
 )
@@ -103,7 +102,6 @@ func TestItemCrud(t *testing.T) {
 	if item.Content != value {
 		t.Error("Expected", value, "got", item.Content)
 	}
-	log.Printf("INFO %v\n", can)
 
 	err = can.Save()
 	if err != nil {

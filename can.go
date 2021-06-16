@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"strings"
 	"time"
 
@@ -48,8 +47,6 @@ func (can *Can) load() error {
 // Save stores a can to file
 func (can *Can) Save() error {
 	data, err := json.Marshal(can)
-	items := can.Items
-	log.Printf("INFO %v\n", items)
 	if err != nil {
 		return err
 	}
