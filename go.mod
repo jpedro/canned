@@ -9,4 +9,5 @@ require (
 	github.com/jpedro/tablelize v0.0.0-20200306200702-e02a1f06bd6d
 	github.com/spf13/cobra v1.1.3
 	golang.org/x/term v0.0.0-20210615171337-6886f2dfbf5b
+	gopkg.in/yaml.v2 v2.4.0
 )

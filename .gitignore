@@ -1,4 +1,4 @@
 /cli/canned/canned
-*.can
+test.can*
 coverage.out
 coverage.html

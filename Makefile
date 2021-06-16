@@ -11,3 +11,9 @@ version: ### Shows the version
 .PHONY: hello
 hello: ### Says hello
 	@echo Hello
+
+.PHONY: test
+test: ### Runs the tests
+	go test -cover -coverprofile coverage.out
+	go tool cover -func coverage.out
+	go tool cover -html coverage.out -o coverage.html

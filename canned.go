@@ -1,6 +1,7 @@
 package canned
 
 import (
+	"fmt"
 	"time"
 )
 
@@ -28,6 +29,10 @@ func NewCan(file string, password string) (*Can, error) {
 
 // Creates a new item object
 func NewItem(name string, content string) (*Item, error) {
+	if name == "" {
+		return nil, fmt.Errorf("name can't be empty")
+	}
+
 	item := &Item{}
 	item.Content = content
 	item.Metadata.CreatedAt = time.Now()

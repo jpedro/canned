@@ -1,11 +1,11 @@
 package canned
 
 import (
-    "time"
+	"time"
 )
 
 // Metadata struct
 type Metadata struct {
-    CreatedAt   time.Time   `json:"createdAt" yaml:"createdAt"`
-    UpdatedAt   time.Time   `json:"updatedAt" yaml:"updatedAt"`
+	CreatedAt time.Time `json:"createdAt" yaml:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt" yaml:"updatedAt"`
 }

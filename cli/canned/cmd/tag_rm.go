@@ -22,8 +22,8 @@ var tagRmCmd = &cobra.Command{
 			bail("%", err)
 		}
 
-		ok := can.DelTag(name, tag)
-		if !ok {
+		err = can.DelTag(name, tag)
+		if err != nil {
 			bail("Tag %s was not removed from %s.\n",
 				paint("green", tag),
 				paint("green", name))
