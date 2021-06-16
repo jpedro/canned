@@ -17,10 +17,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Run linters
-      uses: golangci/golangci-lint-action@v2
-      with:
-        version: v1.29
+    # - name: Run linters
+    #   uses: golangci/golangci-lint-action@v2
+    #   with:
+    #     version: v1.29
 
     - name: Run tests
       run: |
@@ -35,10 +35,10 @@ jobs:
       run: |
         cd ~
         go get github.com/jpedro/canned/cli/canned
-        export CAN_PASSWORD="test"
-        export CAN_FILE="test.can"
+        export CANNED_PASSWORD="test"
+        export CANNED_FILE="test.can"
         canned init
-        canned set test test
+        canned set hello world
         canned ls
         canned env
 
