@@ -24,8 +24,8 @@ jobs:
 
     - name: Run tests
       run: |
-      	go test -v -cover -coverprofile coverage.out
-	      go tool cover -func coverage.out
+        go test -v -cover -coverprofile coverage.out
+        go tool cover -func coverage.out
 
     - name: Test the example
       run: |
