@@ -19,7 +19,7 @@ var tagRmCmd = &cobra.Command{
 
 		can, err := canned.OpenCan(canFile, canPassword)
 		if err != nil {
-			bail("%s", err)
+			bail("%s.", err)
 		}
 
 		err = can.DelTag(name, tag)
