@@ -19,17 +19,17 @@ var setCmd = &cobra.Command{
 
 		can, err := canned.OpenCan(canFile, canPassword)
 		if err != nil {
-			bail("%", err)
+			bail("%s", err)
 		}
 
 		err = can.SetItem(name, value)
 		if err != nil {
-			bail("%", err)
+			bail("%s", err)
 		}
 
 		err = can.Save()
 		if err != nil {
-			bail("%", err)
+			bail("%s", err)
 		}
 
 		fmt.Printf("Item %s stored.\n", paint("green", name))

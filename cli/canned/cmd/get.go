@@ -18,17 +18,17 @@ var getCmd = &cobra.Command{
 		name := args[0]
 		can, err := canned.OpenCan(canFile, canPassword)
 		if err != nil {
-			bail("%", err)
+			bail("%s", err)
 		}
 
 		item, err := can.GetItem(name)
 		if err != nil {
-			bail("%", err)
+			bail("%s", err)
 		}
 
 		err = clipboard.WriteAll(item.Content)
 		if err != nil {
-			bail("%", err)
+			bail("%s", err)
 		}
 
 		fmt.Printf("Item %s copied to the clipboard.\n", paint("green", name))

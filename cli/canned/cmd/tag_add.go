@@ -19,7 +19,7 @@ var tagAddCmd = &cobra.Command{
 
 		can, err := canned.OpenCan(canFile, canPassword)
 		if err != nil {
-			bail("%", err)
+			bail("%s", err)
 		}
 
 		err = can.AddTag(name, tag)
