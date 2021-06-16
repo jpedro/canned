@@ -31,7 +31,7 @@ var tagAddCmd = &cobra.Command{
 
 		err = can.Save()
 		if err != nil {
-			bail("Failed to save file %s.\n", paint("green", canFile))
+			bail("Failed to save file %s: %s\n", paint("green", canFile), err)
 		}
 
 		fmt.Printf("Tag %s was added to item %s\n",

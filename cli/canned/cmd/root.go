@@ -22,9 +22,9 @@ var (
 	rootCmd = &cobra.Command{
 		Use:   "canned",
 		Short: "Canned stores encrypted goodies",
-		Run: func(cmd *cobra.Command, args []string) {
-			usage(nil, []string{})
-		},
+		// Run: func(cmd *cobra.Command, args []string) {
+		// 	usage(nil, []string{})
+		// },
 	}
 )
 

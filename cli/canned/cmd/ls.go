@@ -35,7 +35,6 @@ func newLsCommand() *cobra.Command {
 	cmd.Flags().StringVarP(&options.output, "output", "o", "table", "The outout format")
 
 	return cmd
-
 }
 
 func listItems(can *canned.Can) {
