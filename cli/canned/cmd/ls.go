@@ -25,7 +25,7 @@ func newLsCommand() *cobra.Command {
 			ensurePassword()
 			can, err := canned.OpenCan(canFile, canPassword)
 			if err != nil {
-				panic(err)
+				bail("%s.", err)
 			}
 
 			listItems(can)
@@ -41,7 +41,7 @@ func newLsCommand() *cobra.Command {
 func listItems(can *canned.Can) {
 	var data [][]string
 
-	data = append(data, []string{"NAME", "LENGTH", "CREATED", "UPDATED", "TAGS"})
+	data = append(data, []string{"ITEM", "LENGTH", "CREATED", "UPDATED", "TAGS"})
 	zero := time.Time{}
 
 	for key, item := range can.Items {
