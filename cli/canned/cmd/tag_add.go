@@ -14,8 +14,8 @@ var tagAddCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		ensureFile()
 		ensurePassword()
-		tag := args[0]
-		name := args[1]
+		name := args[0]
+		tag := args[1]
 
 		can, err := canned.OpenCan(canFile, canPassword)
 		if err != nil {
@@ -24,7 +24,7 @@ var tagAddCmd = &cobra.Command{
 
 		err = can.AddTag(name, tag)
 		if err != nil {
-			bail("Tag %s was not added to %s.\n", paint("green", tag), paint("green", name))
+			bail("Tag %s was not added to %s: %s\n", paint("green", tag), paint("green", name), err)
 		}
 
 		err = can.Save()

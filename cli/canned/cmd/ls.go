@@ -19,7 +19,7 @@ func newLsCommand() *cobra.Command {
 
 	cmd := &cobra.Command{
 		Use:   "ls",
-		Short: "Shows all secrets",
+		Short: "Lists all secrets",
 		Run: func(cmd *cobra.Command, args []string) {
 			ensureFile()
 			ensurePassword()
@@ -45,6 +45,7 @@ func listItems(can *canned.Can) {
 	zero := time.Time{}
 
 	for key, item := range can.Items {
+		created := item.Metadata.CreatedAt.Format("2006-01-01")
 		updated := ""
 		if item.Metadata.UpdatedAt != zero {
 			updated = item.Metadata.UpdatedAt.Format("2006-01-01")
@@ -53,7 +54,7 @@ func listItems(can *canned.Can) {
 		data = append(data, []string{
 			key,
 			fmt.Sprintf("%v", len(item.Content)),
-			item.Metadata.CreatedAt.Format("2006-01-01"),
+			created,
 			updated,
 			strings.Join(item.Tags, " ")})
 	}
