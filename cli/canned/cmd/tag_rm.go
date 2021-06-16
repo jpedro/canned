@@ -14,8 +14,8 @@ var tagRmCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		ensureFile()
 		ensurePassword()
-		tag := args[0]
-		name := args[1]
+		name := args[0]
+		tag := args[1]
 
 		can, err := canned.OpenCan(canFile, canPassword)
 		if err != nil {
