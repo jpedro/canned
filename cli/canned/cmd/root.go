@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -67,9 +68,11 @@ ENVIRONMENT VARIABLES
 func init() {
 	cobra.OnInitialize(initConfig)
 	// rootCmd.SetHelpFunc(usage)
-	rootCmd.PersistentFlags().StringVarP(&canFile, "file", "f", "", "Can file path")
+	rootCmd.PersistentFlags().StringVarP(&canFile, "file", "f", "", "Custom can file path")
 	rootCmd.PersistentFlags().BoolVarP(&canVerbose, "verbose", "v", false, "Show verbose output")
 	// rootCmd.PersistentFlags().BoolVarP(&canOverwrite, "overwrite", "", false, "Init can overwrite the same file")
+	log.Printf("INIT %s\n", canFile)
+	log.Printf("INIT %t\n", canVerbose)
 }
 
 func initConfig() {
@@ -77,6 +80,8 @@ func initConfig() {
 	canFile = env("CANNED_FILE", "")
 	canVerbose, _ = strconv.ParseBool(env("CANNED_VERBOSE", "false"))
 	// canOverwrite, _ = strconv.ParseBool(env("CANNED_OVERWRITE", "false"))
+	log.Printf("INIT_CONFIG %s\n", canFile)
+	log.Printf("INIT_CONFIG %t\n", canVerbose)
 }
 
 func ensureFile() {
@@ -93,7 +98,7 @@ func ensureFile() {
 
 	canFile = findNearestFile()
 	if canFile == "" {
-		bail("Error: Couldn't find a default can file. Use the '--file FILE' flag or set the 'CAN_FILE' env var to point to a valid can file.")
+		bail("Error: Couldn't find a default can file. Use the '--file FILE' flag or set the 'CANNED_FILE' env var to point to a valid can file.")
 	}
 }
 

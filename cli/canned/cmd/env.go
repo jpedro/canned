@@ -10,7 +10,6 @@ var envCmd = &cobra.Command{
 	Use:   "env",
 	Short: "Shows the environment status",
 	Run: func(cmd *cobra.Command, args []string) {
-		// ensureFile()
 		file := canFile
 		password := canPassword
 		verbose := canVerbose

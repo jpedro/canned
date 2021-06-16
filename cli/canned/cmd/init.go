@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -20,9 +21,9 @@ func newInitCmd() *cobra.Command {
 		Use:   "init",
 		Short: "Initializes a new can file",
 		Run: func(cmd *cobra.Command, args []string) {
-			if canFile == "" {
-				canFile = canFiles[0]
-			}
+			log.Printf("INIT_RUN %s\n", canFile)
+			ensureFile()
+			log.Printf("INIT_RUN %s\n", canFile)
 
 			if _, err := os.Stat(canFile); err == nil {
 				if options.overwrite {
