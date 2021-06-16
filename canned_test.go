@@ -10,6 +10,7 @@
 package canned
 
 import (
+	"log"
 	"os"
 	"testing"
 )
@@ -19,9 +20,9 @@ const (
 	testPassword = "test"
 )
 
-func TestBootstrap(t *testing.T) {
-	os.Setenv("CANNED_TEST_FORMATS", "XSQABaTYTZ1cYdLMUl0ioTUIx")
-}
+// func TestBootstrap(t *testing.T) {
+// 	os.Setenv("CANNED_DUMP_FORMATS", "XSQABaTYTZ1cYdLMUl0ioTUIx")
+// }
 
 func TestInitCan(t *testing.T) {
 	_, err := InitCan(testFile, testPassword)
@@ -64,11 +65,13 @@ func TestOpenWrongFormat(t *testing.T) {
 }
 
 func TestItemCrud(t *testing.T) {
+	os.Setenv("CANNED_DUMP_FORMATS", "XSQABaTYTZ1cYdLMUl0ioTUIx")
+
 	name := "name"
 	value := "value"
 	tag := "testing"
 
-	can, err := OpenCan(testFile, testPassword)
+	can, err := InitCan(testFile, testPassword)
 	if err != nil {
 		t.Error(err)
 	}
@@ -92,9 +95,22 @@ func TestItemCrud(t *testing.T) {
 		t.Error(err)
 	}
 
+	err = can.AddTag(name, tag+"-new")
+	if err != nil {
+		t.Error(err)
+	}
+
 	if item.Content != value {
 		t.Error("Expected", value, "got", item.Content)
 	}
+	log.Printf("INFO %v\n", can)
+
+	err = can.Save()
+	if err != nil {
+		t.Error(err)
+	}
+
+	os.Setenv("CANNED_DUMP_FORMATS", "")
 }
 
 func TestCanFormats(t *testing.T) {

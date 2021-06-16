@@ -22,7 +22,7 @@ func NewCan(file string, password string) (*Can, error) {
 	can.password = password
 	can.Version = VERSION
 	can.Metadata.CreatedAt = time.Now()
-	can.Items = make(map[string]Item)
+	can.Items = make(map[string]*Item)
 
 	return can, nil
 }
