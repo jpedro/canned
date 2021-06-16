@@ -10,7 +10,7 @@ import (
 )
 
 type initOptions struct {
-	force bool
+	overwrite bool
 }
 
 func newInitCmd() *cobra.Command {
@@ -25,10 +25,10 @@ func newInitCmd() *cobra.Command {
 			}
 
 			if _, err := os.Stat(canFile); err == nil {
-				if options.force {
+				if options.overwrite {
 					fmt.Printf("Overridding file file %s.\n", paint("green", canFile))
 				} else {
-					bail("File %s already exists. Use '--force' to overwrite that file.\n",
+					bail("File %s already exists. Use '--overwrite' to force a new file.\n",
 						paint("green", canFile))
 				}
 			} else {
@@ -52,7 +52,7 @@ func newInitCmd() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().BoolVarP(&options.force, "force", "", false, "Force an override if the current files exists")
+	cmd.Flags().BoolVarP(&options.overwrite, "overwrite", "", false, "Init can override an existing file")
 
 	return cmd
 }

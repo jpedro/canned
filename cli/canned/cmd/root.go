@@ -10,10 +10,11 @@ import (
 )
 
 var (
-	canVerbose  bool
 	canPassword string
 	canFile     string
-	canFiles    = []string{
+	canVerbose  bool
+
+	canFiles = []string{
 		expandHome("~/.config/canned/default.can"),
 		"/etc/canned/default.can",
 	}
@@ -38,28 +39,27 @@ func Execute() error {
 
 func usage(cmd *cobra.Command, text []string) {
 	fmt.Println(`USAGE
-    canned init                # Initializes a new can file
-    canned ls                  # Lists all items
-    canned set NAME [VALUE]    # Stores an item
-    canned get NAME            # Copies the item's content to the clipboard
-    canned rm NAME             # Removes an item
-    canned tag ls              # Shows all tags
-    canned tag add TAG NAME    # Adds the tag TAG to item NAME
-    canned tag rm TAG NAME     # Removes the tag TAG from item NAME
-    canned random [LENGTH]     # Generates a new random value
-    canned env                 # Shows the environment status
-    canned version             # Shows the version
-    canned help                # Shows this help
+    canned init                 # Initializes a new can file
+    canned ls                   # Lists all items
+    canned set NAME [VALUE]     # Stores an item
+    canned get NAME             # Copies the item's content to the clipboard
+    canned rm NAME              # Removes an item
+    canned tag ls               # Shows all tags
+    canned tag add TAG NAME     # Adds the tag TAG to item NAME
+    canned tag rm TAG NAME      # Removes the tag TAG from item NAME
+    canned random [LENGTH]      # Generates a new random value
+    canned env                  # Shows the environment status
+    canned version              # Shows the version
+    canned help                 # Shows this help
 
 GLOBAL OPTIONS
-    -f, --file FILE          # Use a custom file
-    -v, --verbose            # Shows verbose output
+    -f, --file FILE             # Use a custom file
+    -v, --verbose               # Shows verbose output
 
 ENVIRONMENT VARIABLES
-    CAN_FILE                 # Use this file instead of the default
-    CAN_PASSWORD             # Use this password (avoids the password prompt)
-    CAN_VERBOSE              # Turns verbosity on
-    CAN_INIT_FORCE           # Forces a new can file even if the file already exists
+    CANNED_FILE                 # Use this file instead of the default
+    CANNED_PASSWORD             # Use this password (avoids the password prompt)
+    CANNED_VERBOSE              # Turns verbosity on
     `)
 
 }
@@ -67,14 +67,16 @@ ENVIRONMENT VARIABLES
 func init() {
 	cobra.OnInitialize(initConfig)
 	// rootCmd.SetHelpFunc(usage)
-	rootCmd.PersistentFlags().BoolVarP(&canVerbose, "verbose", "v", false, "Show verbose output")
 	rootCmd.PersistentFlags().StringVarP(&canFile, "file", "f", "", "Can file path")
+	rootCmd.PersistentFlags().BoolVarP(&canVerbose, "verbose", "v", false, "Show verbose output")
+	// rootCmd.PersistentFlags().BoolVarP(&canOverwrite, "overwrite", "", false, "Init can overwrite the same file")
 }
 
 func initConfig() {
-	canFile = env("CAN_FILE", "")
-	canPassword = env("CAN_PASSWORD", "")
-	canVerbose, _ = strconv.ParseBool(env("CAN_VERBOSE", "false"))
+	canPassword = env("CANNED_PASSWORD", "")
+	canFile = env("CANNED_FILE", "")
+	canVerbose, _ = strconv.ParseBool(env("CANNED_VERBOSE", "false"))
+	// canOverwrite, _ = strconv.ParseBool(env("CANNED_OVERWRITE", "false"))
 }
 
 func ensureFile() {
