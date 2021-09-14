@@ -14,10 +14,10 @@ $ canned version
 v0.1.0
 
 # Set the passsword
-$ export canPassword="test"
+$ export CANNED_PASSWORD="test"
 
 # Set the can file
-$ export canFile="test.can"
+$ export CANNED_FILE="test.can"
 
 # Start a whole new can
 $ canned init
