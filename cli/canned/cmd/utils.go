@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	USER_HOME string
+	userHome string
 )
 
 func env(name string, fallback string) string {
@@ -50,11 +50,11 @@ func askPassword(prompt string) string {
 func expandHome(path string) string {
 	if USER_HOME == "" {
 		current, _ := user.Current()
-		USER_HOME = current.HomeDir
+		userHome = current.HomeDir
 	}
 
 	if strings.HasPrefix(path, "~/") {
-		path = filepath.Join(USER_HOME, path[2:])
+		path = filepath.Join(userHome, path[2:])
 	}
 
 	return path
