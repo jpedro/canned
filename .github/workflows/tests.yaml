@@ -31,7 +31,7 @@ jobs:
     - name: Test the cli
       run: |
         cd ~
-        go get github.com/jpedro/canned
+        go install github.com/jpedro/canned
         export CANNED_PASSWORD="test"
         export CANNED_FILE="test.can"
         canned init
