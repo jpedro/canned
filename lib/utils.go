@@ -86,7 +86,7 @@ func getHeaders(text string) (map[string]string, string) {
 }
 
 // Ensures the password is not empty or errors
-func verifyPassword(password string) error {
+func ensurePasswordExists(password string) error {
 	if password == "" {
 		return fmt.Errorf("password cannot be empty")
 	}

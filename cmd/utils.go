@@ -9,8 +9,8 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/jpedro/color"
 	"golang.org/x/term"
+	"github.com/jpedro/color"
 )
 
 var (

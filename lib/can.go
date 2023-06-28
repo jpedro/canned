@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"database/sql"
 	"github.com/jpedro/crypto"
 	"gopkg.in/yaml.v2"
 )
@@ -67,9 +68,113 @@ func (can *Can) Save() error {
 		return err
 	}
 
+	err = can.saveDatabase()
+	if err != nil {
+		return err
+	}
+
 	err = can.dump(data)
+	if err != nil {
+		return err
+	}
 
 	return err
+}
+
+func Flatten(nested []any) []any {
+	flattened := make([]any, 0)
+
+	for _, i := range nested {
+		switch i.(type) {
+		case []interface{}:
+			flattenedSubArray := Flatten(i.([]any))
+			flattened = append(flattened, flattenedSubArray...)
+		case interface{}:
+			flattened = append(flattened, i)
+		}
+	}
+
+	return flattened
+}
+
+func (can *Can) saveDatabase() error {
+	db, err := openDatabase(can.file + ".sqlite")
+	if err != nil {
+		panic(err)
+	}
+
+	if len(can.Items) < 1 {
+		return nil
+	}
+
+	params := []any{}
+	values := []string{}
+	for name, item := range can.Items {
+		holders := "(?, ?, ?, ?, ?, ?, ?)"
+		values = append(values, holders)
+		encrypted, err := can.encrypt(item.Content)
+		if err != nil {
+			panic(err)
+		}
+
+		params = append(params, []any{
+			name,
+			"secret",
+			encrypted,
+			can.strength(item.Content),
+			item.Metadata.CreatedAt,
+			item.Metadata.UpdatedAt,
+			strings.Join(item.Tags, ", "),
+		})
+	}
+
+	query := `
+		INSERT INTO
+				header (name, value)
+		VALUES
+				('updated', strftime('%Y-%m-%d %H:%M:%S','now'))
+		ON CONFLICT(name)
+			DO UPDATE SET
+			value = excluded.value
+	`
+	can.execQuery(db, query)
+
+	query = `
+	INSERT INTO
+			item (name, type, value, strength, created, updated, tags)
+	VALUES
+	` + strings.Join(values, ", ")
+
+	query = query + `
+		ON CONFLICT(name)
+		DO UPDATE SET
+			value = excluded.value,
+			updated = strftime('%Y-%m-%d %H:%M:%S','now'),
+			tags = excluded.tags
+	`
+
+	fmt.Println("params:", params)
+	params = Flatten(params)
+	fmt.Println("params:", params)
+	can.execQuery(db, query, params...)
+
+	return err
+}
+
+func (can *Can) execQuery(db *sql.DB, query string, params ...any) {
+	fmt.Println("query:", query)
+	fmt.Println("params:", params)
+
+	res, err := db.Exec(query, params...)
+	if err != nil {
+		panic(err)
+	}
+
+	affected, err2 := res.RowsAffected()
+	if err2 != nil {
+		panic(err2)
+	}
+	fmt.Println("affected:", query, affected)
 }
 
 func (can *Can) dump(data []byte) error {
@@ -216,4 +321,31 @@ func (can *Can) DelTag(name string, tag string) error {
 	can.Items[name] = item
 
 	return nil
+}
+
+func (can *Can) encrypt(data string) (string, error) {
+	encrypted, err := crypto.Encrypt(string(data), can.password)
+	if err != nil {
+		return "", err
+	}
+
+	return encrypted, nil
+}
+
+func (can *Can) decrypt(data string) (string, error) {
+	decrypted, err := crypto.Decrypt(string(data), can.password)
+	if err != nil {
+		return "", err
+	}
+
+	return decrypted, nil
+}
+
+func (can *Can) strength(value string) int {
+	mod := len(value) / 10
+	if mod < 1 {
+		mod = 1
+	}
+
+	return mod
 }
