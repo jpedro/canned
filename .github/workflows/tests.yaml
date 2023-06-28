@@ -1,4 +1,4 @@
-name: tests
+name: Tests
 
 on:
 - push
@@ -6,21 +6,17 @@ on:
 
 jobs:
   test:
+    name: Tests
     runs-on: ubuntu-latest
 
     steps:
     - name: Install Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.15.x
+        go-version: 1.20.x
 
     - name: Checkout code
       uses: actions/checkout@v2
-
-    # - name: Run linters
-    #   uses: golangci/golangci-lint-action@v2
-    #   with:
-    #     version: v1.29
 
     - name: Run tests
       run: |
@@ -35,7 +31,7 @@ jobs:
     - name: Test the cli
       run: |
         cd ~
-        go get github.com/jpedro/canned/cli/canned
+        go get github.com/jpedro/canned
         export CANNED_PASSWORD="test"
         export CANNED_FILE="test.can"
         canned init
