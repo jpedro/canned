@@ -1,6 +1,8 @@
 # Canned
 
-A go cli tool to store encrypted goods.
+[![Tests](https://github.com/jpedro/canned/actions/workflows/tests.yaml/badge.svg)](https://github.com/jpedro/canned/actions/workflows/tests.yaml)
+
+A cli tool to store encrypted goods.
 
 
 ## Usage
