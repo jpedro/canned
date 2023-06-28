@@ -36,7 +36,7 @@ jobs:
         go run . init
         go run . set hello world
         go run . ls
-        go run . env
+        go run . info
 
     - name: Notify slack
       uses: 8398a7/action-slack@v3
