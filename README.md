@@ -6,12 +6,12 @@ A go cli tool to store encrypted goods.
 ## Usage
 
 ```bash
-### Install canned
-$ go get github.com/jpedro/canned/cli/canned
+### Install canned cli
+$ go install github.com/jpedro/canned
 
 ### Check the version
 $ canned version
-v0.1.0
+v1.0.0
 
 ### Set the passsword and file
 $ export CANNED_PASSWORD="test"
@@ -28,8 +28,8 @@ Item hello saved.
 
 ### List your items
 $ canned ls
-NAME    LENGTH   CREATED      UPDATED   TAGS
-hello        5   2021-01-01
+NAME    STRENTH   CREATED      UPDATED   TAGS
+hello         *   2021-01-01
 
 ### Copy the hello item content to the clipboard
 $ canned get hello
