@@ -1,39 +1,37 @@
 # Canned
 
-[![Github Status](https://github.com/jpedro/canned/workflows/tests/badge.svg)](https://github.com/jpedro/canned/actions)
-[![GoDoc](https://godoc.org/github.com/jpedro/canned?status.svg)](https://godoc.org/github.com/jpedro/canned)
-
-Stores your secrets.
+A go cli tool to store encrypted goods.
 
 
 ## Usage
 
-```go
-package main
+```bash
+### Install canned
+$ go get github.com/jpedro/canned/cli/canned
 
-import (
-	"fmt"
+### Check the version
+$ canned version
+v0.1.0
 
-	"github.com/jpedro/canned"
-)
+### Set the passsword and file
+$ export CANNED_PASSWORD="test"
 
-func main() {
-	file := "/tmp/example.can"
-	password := "test123"
-	name := "hello"
-	value := "world"
+$ export CANNED_FILE="test.can"
 
-	can, _ := canned.InitCan(file, password)
-	can.SetItem(name, value)
-	can.Save()
+### Start a whole new can
+$ canned init
+File test.can initialized.
 
-	can, _ = canned.OpenCan(file, password)
-	item, _ := can.GetItem(name)
+### Add one item
+$ canned set hello world
+Item hello saved.
 
-	fmt.Printf("Item '%s' content: '%s'.\n", name, item.Content)
-}
+### List your items
+$ canned ls
+NAME    LENGTH   CREATED      UPDATED   TAGS
+hello        5   2021-01-01
+
+### Copy the hello item content to the clipboard
+$ canned get hello
+Item hello copied to the clipboard.
 ```
-
-## CLI
-
-Check [cli/canned](cli/canned) for your terminal needs.

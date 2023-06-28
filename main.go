@@ -3,7 +3,7 @@ package main
 import (
     "os"
 
-    "github.com/jpedro/canned/cli/canned/cmd"
+    "github.com/jpedro/canned/cmd"
 )
 
 func main() {

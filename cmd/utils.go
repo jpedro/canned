@@ -48,7 +48,7 @@ func askPassword(prompt string) string {
 }
 
 func expandHome(path string) string {
-	if USER_HOME == "" {
+	if userHome == "" {
 		current, _ := user.Current()
 		userHome = current.HomeDir
 	}
