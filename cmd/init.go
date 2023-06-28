@@ -21,7 +21,7 @@ func newInitCmd() *cobra.Command {
 		Use:   "init",
 		Short: "Initializes a new can file",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("canFile:", canFile)
+			// fmt.Println("canFile:", canFile)
 			_, err := os.Stat(canFile)
 			if err == nil {
 				if options.force {
