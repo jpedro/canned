@@ -1,13 +1,13 @@
 package cmd
 
 import (
-	"fmt"
 	"strings"
 	"time"
 
-	"github.com/jpedro/canned"
 	"github.com/jpedro/tablelize"
 	"github.com/spf13/cobra"
+
+	"github.com/jpedro/canned/lib"
 )
 
 type lsOptions struct {
@@ -21,8 +21,9 @@ func newLsCommand() *cobra.Command {
 		Use:   "ls",
 		Short: "Lists all secrets",
 		Run: func(cmd *cobra.Command, args []string) {
-			ensureFile()
-			ensurePassword()
+			ensureFileExists()
+			ensureWeHaveThePassword()
+
 			can, err := canned.OpenCan(canFile, canPassword)
 			if err != nil {
 				bail("%s.", err)
@@ -40,7 +41,7 @@ func newLsCommand() *cobra.Command {
 func listItems(can *canned.Can) {
 	var data [][]string
 
-	data = append(data, []string{"ITEM", "LENGTH", "CREATED", "UPDATED", "TAGS"})
+	data = append(data, []string{"ITEM", "STRENGTH", "CREATED", "UPDATED", "TAGS"})
 	zero := time.Time{}
 
 	for key, item := range can.Items {
@@ -50,9 +51,14 @@ func listItems(can *canned.Can) {
 			updated = item.Metadata.UpdatedAt.Format("2006-01-01")
 		}
 
+		mod := len(item.Content) / 10
+		if mod < 1 {
+			mod = 1
+		}
+		// strength := 1
 		data = append(data, []string{
 			key,
-			fmt.Sprintf("%v", len(item.Content)),
+			strings.Repeat("*", mod),
 			created,
 			updated,
 			strings.Join(item.Tags, " ")})

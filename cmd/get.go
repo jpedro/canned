@@ -4,17 +4,18 @@ import (
 	"fmt"
 
 	"github.com/atotto/clipboard"
-	"github.com/jpedro/canned"
 	"github.com/spf13/cobra"
+
+	"github.com/jpedro/canned/lib"
 )
 
 var getCmd = &cobra.Command{
 	Use:   "get",
-	Short: "Get an item",
+	Short: "Copies an item to the clipboard",
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		ensureFile()
-		ensurePassword()
+		ensureFileExists()
+		ensureWeHaveThePassword()
 		name := args[0]
 		can, err := canned.OpenCan(canFile, canPassword)
 		if err != nil {

@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -23,9 +22,9 @@ var (
 	rootCmd = &cobra.Command{
 		Use:   "canned",
 		Short: "Canned stores encrypted goodies",
-		// Run: func(cmd *cobra.Command, args []string) {
-		// 	usage(nil, []string{})
-		// },
+		Run: func(cmd *cobra.Command, args []string) {
+			usage(nil, []string{})
+		},
 	}
 )
 
@@ -51,7 +50,7 @@ func usage(cmd *cobra.Command, text []string) {
     canned random [LENGTH]      # Generates a new random value
     canned env                  # Shows the environment status
     canned version              # Shows the version
-    canned help                 # Shows this help
+    canned help [COMMAND]       # Shows this help for a COMMAND
 
 GLOBAL OPTIONS
     -f, --file FILE             # Use a custom file
@@ -71,8 +70,8 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&canFile, "file", "f", "", "Custom can file path")
 	rootCmd.PersistentFlags().BoolVarP(&canVerbose, "verbose", "v", false, "Show verbose output")
 	// rootCmd.PersistentFlags().BoolVarP(&canOverwrite, "overwrite", "", false, "Init can overwrite the same file")
-	log.Printf("INIT %s\n", canFile)
-	log.Printf("INIT %t\n", canVerbose)
+	// log.Printf("INIT %s\n", canFile)
+	// log.Printf("INIT %t\n", canVerbose)
 }
 
 func initConfig() {
@@ -80,11 +79,11 @@ func initConfig() {
 	canFile = env("CANNED_FILE", "")
 	canVerbose, _ = strconv.ParseBool(env("CANNED_VERBOSE", "false"))
 	// canOverwrite, _ = strconv.ParseBool(env("CANNED_OVERWRITE", "false"))
-	log.Printf("INIT_CONFIG %s\n", canFile)
-	log.Printf("INIT_CONFIG %t\n", canVerbose)
+	// log.Printf("INIT_CONFIG %s\n", canFile)
+	// log.Printf("INIT_CONFIG %t\n", canVerbose)
 }
 
-func ensureFile() {
+func ensureFileExists() {
 	if canFile != "" {
 		info, err := os.Stat(canFile)
 		if os.IsNotExist(err) {
@@ -117,7 +116,7 @@ func findNearestFile() string {
 	return ""
 }
 
-func ensurePassword() {
+func ensureWeHaveThePassword() {
 	if canPassword != "" {
 		return
 	}

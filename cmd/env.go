@@ -36,10 +36,10 @@ var envCmd = &cobra.Command{
 		}
 
 		fmt.Printf("ENVIRONMENT\n")
-		fmt.Printf("  File:           %v\n", file)
-		fmt.Printf("  Password:       %v\n", password)
-		fmt.Printf("  Verbosity:      %v\n", verbosity)
-		fmt.Printf("  Default files:  %v\n", paint("pale", canFiles))
+		fmt.Printf("    File:           %v\n", file)
+		fmt.Printf("    Password:       %v\n", password)
+		fmt.Printf("    Verbosity:      %v\n", verbosity)
+		fmt.Printf("    Default files:  %v\n", paint("pale", canFiles))
 	},
 }
 

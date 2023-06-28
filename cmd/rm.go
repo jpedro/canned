@@ -3,8 +3,9 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/jpedro/canned"
 	"github.com/spf13/cobra"
+
+	"github.com/jpedro/canned/lib"
 )
 
 var rmCmd = &cobra.Command{
@@ -12,8 +13,9 @@ var rmCmd = &cobra.Command{
 	Short: "Removes an item",
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		ensureFile()
-		ensurePassword()
+		ensureFileExists()
+		ensureWeHaveThePassword()
+
 		name := args[0]
 		can, err := canned.OpenCan(canFile, canPassword)
 		if err != nil {

@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/jpedro/canned"
 	"github.com/jpedro/tablelize"
 	"github.com/spf13/cobra"
+
+	"github.com/jpedro/canned/lib"
 )
 
 type tagStats struct {
@@ -20,8 +21,8 @@ var tagLsCmd = &cobra.Command{
 	Use:   "ls",
 	Short: "Lists all used tags",
 	Run: func(cmd *cobra.Command, args []string) {
-		ensureFile()
-		ensurePassword()
+		ensureFileExists()
+		ensureWeHaveThePassword()
 
 		can, err := canned.OpenCan(canFile, canPassword)
 		if err != nil {
@@ -46,14 +47,15 @@ var tagLsCmd = &cobra.Command{
 		}
 		// log.Printf("tagsStats %v\n", tagsStats)
 		var data [][]string
-		data = append(data, []string{"TAG", "COUNT", "ITEMS"})
+		data = append(data, []string{"COUNT", "TAG", "ITEMS"})
 
 		for name, stats := range tagsStats {
 			// log.Printf("stats %v\n", stats)
 			data = append(data, []string{
-				name,
 				fmt.Sprintf("%d", stats.Count),
-				strings.Join(stats.Items, " ")})
+				name,
+				strings.Join(stats.Items, " ")},
+			)
 		}
 		tablelize.Rows(data)
 	},

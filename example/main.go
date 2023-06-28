@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/jpedro/canned"
+	"github.com/jpedro/canned/lib"
 )
 
 func main() {
@@ -19,5 +19,5 @@ func main() {
 	can, _ = canned.OpenCan(file, password)
 	item, _ := can.GetItem(name)
 
-	fmt.Printf("Item '%s' content: '%s'.\n", name, item.Content)
+	fmt.Printf("Item '%s' has content: '%s'.\n", name, item.Content)
 }

@@ -60,9 +60,9 @@ func expandHome(path string) string {
 	return path
 }
 
-func bail(format string, msg ...interface{}) {
-	fmt.Printf("Error: "+format, msg...)
-	if format[len(format)-1:] != "\n" {
+func bail(message string, args ...any) {
+	fmt.Printf("\033[31;1mError: "+message+"\033[0m", args...)
+	if message[len(message)-1:] != "\n" {
 		fmt.Println("")
 	}
 	os.Exit(1)

@@ -3,8 +3,9 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/jpedro/canned"
 	"github.com/spf13/cobra"
+
+	"github.com/jpedro/canned/lib"
 )
 
 var tagAddCmd = &cobra.Command{
@@ -12,8 +13,8 @@ var tagAddCmd = &cobra.Command{
 	Short: "Adds TAG to NAME",
 	Args:  cobra.MinimumNArgs(2),
 	Run: func(cmd *cobra.Command, args []string) {
-		ensureFile()
-		ensurePassword()
+		ensureFileExists()
+		ensureWeHaveThePassword()
 		name := args[0]
 		tag := args[1]
 
