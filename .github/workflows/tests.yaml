@@ -30,14 +30,13 @@ jobs:
 
     - name: Test the cli
       run: |
-        cd ~
         go install github.com/jpedro/canned@latest
         export CANNED_PASSWORD="test"
         export CANNED_FILE="test.can"
-        canned init
-        canned set hello world
-        canned ls
-        canned env
+        go run . init
+        go run . set hello world
+        go run . ls
+        go run . env
 
     - name: Notify slack
       uses: 8398a7/action-slack@v3
