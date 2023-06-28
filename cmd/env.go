@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -26,7 +27,12 @@ var envCmd = &cobra.Command{
 		if password == "" {
 			password = paint("pale", "(not set)")
 		} else {
-			password = paint("yellow", "****")
+			mod := len(canPassword) / 10
+			if mod < 1 {
+				mod = 1
+			}
+			strength := strings.Repeat("*", mod)
+			password = paint("yellow", strength)
 		}
 
 		if verbose {
