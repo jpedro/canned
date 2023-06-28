@@ -7,9 +7,9 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var envCmd = &cobra.Command{
-	Use:   "env",
-	Short: "Shows the environment status",
+var infoCmd = &cobra.Command{
+	Use:   "info",
+	Short: "Shows information and the environment",
 	Run: func(cmd *cobra.Command, args []string) {
 		file := canFile
 		password := canPassword
@@ -53,5 +53,5 @@ var envCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(envCmd)
+	rootCmd.AddCommand(infoCmd)
 }

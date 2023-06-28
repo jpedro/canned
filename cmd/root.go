@@ -49,7 +49,7 @@ func usage(cmd *cobra.Command, text []string) {
     canned tag add TAG NAME     # Adds the tag TAG to item NAME
     canned tag rm TAG NAME      # Removes the tag TAG from item NAME
     canned random [LENGTH]      # Generates a new random value
-    canned env                  # Shows the environment status
+    canned info                 # Shows information and the environment
     canned version              # Shows the version
     canned help [COMMAND]       # Shows this help for a COMMAND
 
@@ -61,7 +61,7 @@ ENVIRONMENT VARIABLES
     CANNED_FILE                 # Use this file instead of the default
     CANNED_PASSWORD             # Use this password (avoids the password prompt)
     CANNED_VERBOSE              # Turns verbosity on
-    `)
+	`)
 
 }
 
