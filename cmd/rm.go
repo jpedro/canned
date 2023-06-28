@@ -32,7 +32,7 @@ var rmCmd = &cobra.Command{
 			bail("%s.", err)
 		}
 
-		fmt.Printf("Item %s removed.\n", paint("green", name))
+		fmt.Printf("Item '%s' removed.\n", paint("green", name))
 	},
 }
 

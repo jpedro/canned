@@ -32,7 +32,7 @@ var getCmd = &cobra.Command{
 			bail("%s.", err)
 		}
 
-		fmt.Printf("Item %s copied to the clipboard.\n", paint("green", name))
+		fmt.Printf("Item '%s' copied to the clipboard.\n", paint("green", name))
 	},
 }
 

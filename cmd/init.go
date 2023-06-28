@@ -25,20 +25,20 @@ func newInitCmd() *cobra.Command {
 			_, err := os.Stat(canFile)
 			if err == nil {
 				if options.force {
-					fmt.Printf(
-						"Overridding file file %s.\n",
-						paint("green", canFile),
+					warn(
+						"Overridding file '%s'.",
+						canFile,
 					)
 				} else {
 					bail(
-						"File %s already exists. Use '--force' to recreate the file anew.",
-						paint("green", canFile),
+						"File '%s' already exists. Use '--force' to recreate the file anew.",
+						canFile,
 					)
 				}
 
 			} else {
 				fmt.Printf(
-					"Will initialize can in a fresh file %s.\n",
+					"Will initialize can in a fresh file '%s'.\n",
 					paint("green", canFile),
 				)
 			}
@@ -55,7 +55,7 @@ func newInitCmd() *cobra.Command {
 				panic(err)
 			}
 
-			fmt.Printf("Can initialized in file %s.\n", paint("green", canFile))
+			fmt.Printf("Fresh can initialized in '%s'.\n", paint("green", canFile))
 		},
 	}
 

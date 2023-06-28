@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"os/user"
 	"path/filepath"
@@ -58,6 +59,30 @@ func expandHome(path string) string {
 	}
 
 	return path
+}
+
+func getRandomPassword(length int) string {
+	randomChars = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
+	randomSymbols = []rune("-")
+	totalChars := len(randomChars)
+	totalSymbols := len(randomSymbols)
+	buffer := make([]rune, length)
+	for i := range buffer {
+		if i > 0 && (i + 1) % 6 == 0 && i < (length -1) {
+			buffer[i] = randomSymbols[rand.Intn(totalSymbols)]
+		} else {
+			buffer[i] = randomChars[rand.Intn(totalChars)]
+		}
+	}
+
+	return string(buffer)
+}
+
+func warn(message string, args ...any) {
+	fmt.Fprintf(os.Stderr, "\033[33;1mWarning: "+message+"\033[0m", args...)
+	if message[len(message)-1:] != "\n" {
+		fmt.Println("")
+	}
 }
 
 func bail(message string, args ...any) {
