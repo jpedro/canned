@@ -11,34 +11,32 @@ var infoCmd = &cobra.Command{
 	Use:   "info",
 	Short: "Shows information and the environment",
 	Run: func(cmd *cobra.Command, args []string) {
-		file := canFile
-		password := canPassword
-		verbose := canVerbose
-		verbosity := ""
 
-		if file == canFiles[0] {
-			file = paint("pale", file)
-		} else if file == "" {
-			file = paint("pale", "(not set)")
+		infoFile := canFile
+		fmt.Println("canFile:", canFile)
+		if infoFile == canFiles[0] {
+			infoFile = paint("pale", infoFile)
+		} else if infoFile == "" {
+			infoFile = paint("pale", "(not set) using "+canFiles[0])
 		} else {
-			file = paint("yellow", file)
+			infoFile = paint("yellow", infoFile)
 		}
 
-		if password == "" {
-			password = paint("pale", "(not set)")
-		} else {
+		infoPassword := paint("pale", "(not set)")
+		if canPassword != "" {
 			mod := len(canPassword) / 10
 			if mod < 1 {
 				mod = 1
 			}
 			strength := strings.Repeat("*", mod)
-			password = paint("yellow", strength)
+			infoPassword = paint("yellow", strength)
 		}
 
-		if verbose {
-			verbosity = paint("yellow", "true")
+		infoVerbose := ""
+		if canVerbose {
+			infoVerbose = paint("yellow", "true")
 		} else {
-			verbosity = paint("pale", "false")
+			infoVerbose = paint("pale", "false")
 		}
 
 		fmt.Printf("INFO\n")
@@ -46,9 +44,9 @@ var infoCmd = &cobra.Command{
 		fmt.Printf("    Version:        %s\n", canVersion)
 		fmt.Println("")
 		fmt.Printf("ENVIRONMENT\n")
-		fmt.Printf("    File:           %v\n", file)
-		fmt.Printf("    Password:       %v\n", password)
-		fmt.Printf("    Verbosity:      %v\n", verbosity)
+		fmt.Printf("    File:           %v\n", infoFile)
+		fmt.Printf("    Password:       %v\n", infoPassword)
+		fmt.Printf("    Verbose:        %v\n", infoVerbose)
 	},
 }
 
