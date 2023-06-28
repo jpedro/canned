@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 
@@ -22,27 +21,30 @@ func newInitCmd() *cobra.Command {
 		Use:   "init",
 		Short: "Initializes a new can file",
 		Run: func(cmd *cobra.Command, args []string) {
-			log.Printf("INIT_RUN %s\n", canFile)
-			ensureFileExists()
-			log.Printf("INIT_RUN %s\n", canFile)
-			ensureFileExists()
-
-			if _, err := os.Stat(canFile); err == nil {
+			_, err := os.Stat(canFile)
+			if err == nil {
 				if options.force {
-					fmt.Printf("Overridding file file %s.\n", paint("green", canFile))
+					fmt.Printf(
+						"Overridding file file %s.\n",
+						paint("green", canFile),
+					)
 				} else {
-					bail("File %s already exists. Use '--force' to force a new file.\n",
-						paint("green", canFile))
+					bail(
+						"File %s already exists. Use '--force' to recreate the file anew.",
+						paint("green", canFile),
+					)
 				}
 
 			} else {
-				fmt.Printf("Will initialize a new can in file %s.\n",
-					paint("green", canFile))
+				fmt.Printf(
+					"Will initialize can in a fresh file %s.\n",
+					paint("green", canFile),
+				)
 			}
 
 			ensureWeHaveThePassword()
 			dirName := filepath.Dir(canFile)
-			err := os.MkdirAll(dirName, 0700)
+			err = os.MkdirAll(dirName, 0700)
 			if err != nil {
 				panic(err)
 			}
@@ -56,7 +58,7 @@ func newInitCmd() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().BoolVarP(&options.force, "overwrite", "", false, "Init can override an existing file")
+	cmd.Flags().BoolVarP(&options.force, "force", "", false, "Override the existing file")
 
 	return cmd
 }

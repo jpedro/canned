@@ -75,9 +75,19 @@ func init() {
 }
 
 func initConfig() {
-	canPassword = env("CANNED_PASSWORD", "")
-	canFile = env("CANNED_FILE", "")
-	canVerbose, _ = strconv.ParseBool(env("CANNED_VERBOSE", "false"))
+	if canPassword == "" {
+		canPassword = env("CANNED_PASSWORD", "")
+	}
+
+	// fmt.Println("canFile:", canFile)
+	if canFile == "" {
+		canFile = env("CANNED_FILE", "")
+	}
+	// fmt.Println("canFile:", canFile)
+
+	if !canVerbose {
+		canVerbose, _ = strconv.ParseBool(env("CANNED_VERBOSE", "false"))
+	}
 	// canOverwrite, _ = strconv.ParseBool(env("CANNED_OVERWRITE", "false"))
 	// log.Printf("INIT_CONFIG %s\n", canFile)
 	// log.Printf("INIT_CONFIG %t\n", canVerbose)

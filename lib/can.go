@@ -65,8 +65,8 @@ func (can *Can) Save() error {
 		return err
 	}
 
-	testFormats := env("CANNED_DUMP_FORMATS", "")
-	if testFormats == "XSQABaTYTZ1cYdLMUl0ioTUIx" {
+	dump := env("CANNED_DUMP", "")
+	if dump == "yes-pretty-please-dump-the-can" {
 		testCan := can
 		for name := range can.Items {
 			testCan.SetItem(name, "redacted")
