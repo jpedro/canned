@@ -3,26 +3,27 @@ package canned
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"strings"
 	"time"
 
 	"github.com/jpedro/crypto"
-	yaml "gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v2"
 )
 
 // Can struct
 type Can struct {
-	file     string
-	password string
-	Version  string           `json:"version"   yaml:"version"`
-	Metadata Metadata         `json:"metadata"  yaml:"metadata"`
-	Items    map[string]*Item `json:"items"     yaml:"items"`
+	file      string
+	password  string
+	Version   string           `json:"version"   yaml:"version"`
+	Algorithm string           `json:"algorithm" yaml:"algorithm"`
+	Metadata  Metadata         `json:"metadata"  yaml:"metadata"`
+	Items     map[string]*Item `json:"items"     yaml:"items"`
 }
 
-// Loads a can file into memory
+// Loads the can file into memory
 func (can *Can) load() error {
-	content, err := ioutil.ReadFile(can.file)
+	content, err := os.ReadFile(can.file)
 	if err != nil {
 		return err
 	}
@@ -40,11 +41,12 @@ func (can *Can) load() error {
 	}
 
 	can.Version = headers["version"]
+	can.Algorithm = headers["version"]
 
 	return nil
 }
 
-// Save stores a can to file
+// Saves the can into the file
 func (can *Can) Save() error {
 	data, err := json.Marshal(can)
 	if err != nil {
@@ -60,45 +62,57 @@ func (can *Can) Save() error {
 	aligned := strings.Join(chunks, "\n")
 	headed := addHeaders(aligned)
 
-	err = ioutil.WriteFile(can.file, []byte(headed), 0644)
+	err = os.WriteFile(can.file, []byte(headed), 0644)
 	if err != nil {
 		return err
 	}
 
+	err = can.dump(data)
+
+	return err
+}
+
+func (can *Can) dump(data []byte) error {
 	dump := env("CANNED_DUMP", "")
-	if dump == "yes-pretty-please-dump-the-can" {
-		testCan := can
-		for name := range can.Items {
-			testCan.SetItem(name, "redacted")
-		}
+	if dump != "yes-pretty-please-dump-the-can" {
+		return nil
+	}
 
-		dataJson, err := json.Marshal(testCan)
-		if err != nil {
-			return err
-		}
+	redacted := can
+	for name := range can.Items {
+		redacted.SetItem(name, "[redacted]")
+	}
 
-		dataYaml, err := yaml.Marshal(testCan)
-		if err != nil {
-			return err
-		}
-		err = ioutil.WriteFile(can.file+".json", dataJson, 0644)
-		if err != nil {
-			return err
-		}
-		err = ioutil.WriteFile(can.file+".yaml", dataYaml, 0644)
-		if err != nil {
-			return err
-		}
-		var loadedJson *Can
-		err = json.Unmarshal(data, &loadedJson)
-		if err != nil {
-			return err
-		}
-		var loadedYaml *Can
-		err = yaml.Unmarshal(dataYaml, &loadedYaml)
-		if err != nil {
-			return err
-		}
+	dataJson, err := json.Marshal(redacted)
+	if err != nil {
+		return err
+	}
+
+	dataYaml, err := yaml.Marshal(redacted)
+	if err != nil {
+		return err
+	}
+
+	err = os.WriteFile(can.file+".json", dataJson, 0644)
+	if err != nil {
+		return err
+	}
+
+	err = os.WriteFile(can.file+".yaml", dataYaml, 0644)
+	if err != nil {
+		return err
+	}
+
+	var loadedJson *Can
+	err = json.Unmarshal(data, &loadedJson)
+	if err != nil {
+		return err
+	}
+
+	var loadedYaml *Can
+	err = yaml.Unmarshal(dataYaml, &loadedYaml)
+	if err != nil {
+		return err
 	}
 
 	return nil

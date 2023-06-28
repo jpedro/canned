@@ -1,9 +1,6 @@
-# Canned
+# Canned library
 
-[![Github Status](https://github.com/jpedro/canned/workflows/tests/badge.svg)](https://github.com/jpedro/canned/actions)
-[![GoDoc](https://godoc.org/github.com/jpedro/canned?status.svg)](https://godoc.org/github.com/jpedro/canned)
-
-Stores your secrets.
+The library code for the canned cli.
 
 
 ## Usage
@@ -14,7 +11,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/jpedro/canned"
+	"github.com/jpedro/canned/lib"
 )
 
 func main() {
@@ -33,7 +30,3 @@ func main() {
 	fmt.Printf("Item '%s' content: '%s'.\n", name, item.Content)
 }
 ```
-
-## CLI
-
-Check [cli/canned](cli/canned) for your terminal needs.

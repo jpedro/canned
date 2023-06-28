@@ -21,6 +21,7 @@ func NewCan(file string, password string) (*Can, error) {
 	can.file = file
 	can.password = password
 	can.Version = VERSION
+	can.Algorithm = ALGORITHM
 	can.Metadata.CreatedAt = time.Now()
 	can.Items = make(map[string]*Item)
 
