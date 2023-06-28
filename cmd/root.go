@@ -13,6 +13,7 @@ var (
 	canPassword string
 	canFile     string
 	canVerbose  bool
+	canVersion = "v1.0.1"
 
 	canFiles = []string{
 		expandHome("~/.config/canned/default.can"),
