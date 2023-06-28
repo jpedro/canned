@@ -61,7 +61,7 @@ func initDatabase(file string) (*sql.DB, error) {
 			id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 			type TEXT NOT NULL,
 			name TEXT NOT NULL UNIQUE,
-			value TEXT NOT NULL,
+			value BLOB NOT NULL,
 			size INTEGER NOT NULL,
 			created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			updated DATETIME

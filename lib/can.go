@@ -132,7 +132,7 @@ func (can *Can) saveDatabase() error {
 		INSERT INTO
 				header (name, value)
 		VALUES
-				('updated', strftime('%Y-%m-%d %H:%M:%S','now'))
+				('updated', CURRENT_TIMESTAMP)
 		ON CONFLICT(name)
 			DO UPDATE SET
 			value = excluded.value
@@ -149,7 +149,7 @@ func (can *Can) saveDatabase() error {
 		ON CONFLICT(name)
 		DO UPDATE SET
 			value = excluded.value,
-			updated = strftime('%Y-%m-%d %H:%M:%S','now'),
+			updated = CURRENT_TIMESTAMP,
 			tags = excluded.tags
 	`
 
