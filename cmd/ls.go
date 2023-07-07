@@ -45,10 +45,10 @@ func listItems(can *canned.Can) {
 	zero := time.Time{}
 
 	for key, item := range can.Items {
-		created := item.Metadata.CreatedAt.Format("2006-01-01")
+		created := item.Metadata.Created.Format("2006-01-01")
 		updated := ""
-		if item.Metadata.UpdatedAt != zero {
-			updated = item.Metadata.UpdatedAt.Format("2006-01-01")
+		if item.Metadata.Updated != zero {
+			updated = item.Metadata.Updated.Format("2006-01-01")
 		}
 
 		mod := len(item.Content) / 10

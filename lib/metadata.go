@@ -6,6 +6,6 @@ import (
 
 // Metadata struct
 type Metadata struct {
-	CreatedAt time.Time `json:"createdAt" yaml:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt,omitempty" yaml:"updatedAt,omitempty"`
+	Created time.Time `json:"created" yaml:"created"`
+	Updated time.Time `json:"updated,omitempty" yaml:"updated,omitempty"`
 }
