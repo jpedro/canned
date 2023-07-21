@@ -7,6 +7,7 @@ require (
 	github.com/jpedro/color v0.1.11
 	github.com/jpedro/crypto v0.0.0-20210124053230-fd553cfaa066
 	github.com/jpedro/tablelize v0.0.0-20200306200702-e02a1f06bd6d
+	github.com/mattn/go-sqlite3 v1.14.17
 	github.com/spf13/cobra v1.2.1
 	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211
 	gopkg.in/yaml.v2 v2.4.0

@@ -9,8 +9,8 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/jpedro/color"
 	"golang.org/x/term"
+	"github.com/jpedro/color"
 )
 
 var (
@@ -35,8 +35,8 @@ func askPassword(prompt string) string {
 	// fmt.Print("\033[8m") // Hide input
 	// fmt.Scan(&password)
 	// fmt.Print("\033[28m")
-
 	// return password
+
 	fmt.Print(prompt)
 	bytes, err := term.ReadPassword(syscall.Stdin)
 	fmt.Println()

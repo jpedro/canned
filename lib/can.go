@@ -8,20 +8,20 @@ import (
 	"time"
 
 	"github.com/jpedro/crypto"
-	"gopkg.in/yaml.v2"
 )
 
 // Can struct
 type Can struct {
-	file      string
-	password  string
-	Version   string           `json:"version"   yaml:"version"`
-	Algorithm string           `json:"algorithm" yaml:"algorithm"`
-	Metadata  Metadata         `json:"metadata"  yaml:"metadata"`
-	Items     map[string]*Item `json:"items"     yaml:"items"`
+	file         string
+	password     string
+	Version      string           `json:"version"   yaml:"version"`
+	Algorithm    string           `json:"algorithm" yaml:"algorithm"`
+	Verification string           `json:"verification" yaml:"verification"`
+	Metadata     Metadata         `json:"metadata"  yaml:"metadata"`
+	Items        map[string]*Item `json:"items"     yaml:"items"`
 }
 
-// Loads the can file into memory
+// Loads the can file into memory.
 func (can *Can) load() error {
 	content, err := os.ReadFile(can.file)
 	if err != nil {
@@ -67,55 +67,17 @@ func (can *Can) Save() error {
 		return err
 	}
 
-	err = can.dump(data)
+	err = saveDatabase(can)
+	if err != nil {
+		return err
+	}
+
+	err = dump(can)
+	if err != nil {
+		return err
+	}
 
 	return err
-}
-
-func (can *Can) dump(data []byte) error {
-	dump := env("CANNED_DUMP", "")
-	if dump != "yes-pretty-please-dump-the-can" {
-		return nil
-	}
-
-	redacted := can
-	for name := range can.Items {
-		redacted.SetItem(name, "[redacted]")
-	}
-
-	dataJson, err := json.Marshal(redacted)
-	if err != nil {
-		return err
-	}
-
-	dataYaml, err := yaml.Marshal(redacted)
-	if err != nil {
-		return err
-	}
-
-	err = os.WriteFile(can.file+".json", dataJson, 0644)
-	if err != nil {
-		return err
-	}
-
-	err = os.WriteFile(can.file+".yaml", dataYaml, 0644)
-	if err != nil {
-		return err
-	}
-
-	var loadedJson *Can
-	err = json.Unmarshal(data, &loadedJson)
-	if err != nil {
-		return err
-	}
-
-	var loadedYaml *Can
-	err = yaml.Unmarshal(dataYaml, &loadedYaml)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 // SetItem stores an item's name and value
@@ -125,8 +87,8 @@ func (can *Can) SetItem(name string, value string) error {
 	item = can.Items[name]
 	if item != nil {
 		item.Content = value
-		item.Metadata.UpdatedAt = time.Now()
-		can.Metadata.UpdatedAt = item.Metadata.UpdatedAt
+		item.Metadata.Updated = time.Now()
+		can.Metadata.Updated = item.Metadata.Updated
 		return nil
 	}
 
@@ -147,11 +109,10 @@ func (can *Can) RenameItem(name string, newName string) error {
 		return fmt.Errorf("Item %s doesn't exist", name)
 	}
 
-	newItem := item
-	newItem.Metadata.UpdatedAt = time.Now()
-	can.Metadata.UpdatedAt = newItem.Metadata.UpdatedAt
+	item.Metadata.Updated = time.Now()
+	can.Metadata.Updated = item.Metadata.Updated
 
-	can.Items[newName] = newItem
+	can.Items[newName] = item
 	delete(can.Items, name)
 
 	return nil
@@ -174,7 +135,7 @@ func (can *Can) DelItem(name string) error {
 		return fmt.Errorf("Item %s doesn't exist", name)
 	}
 
-	can.Metadata.UpdatedAt = time.Now()
+	can.Metadata.Updated = time.Now()
 	delete(can.Items, name)
 
 	return nil
@@ -191,8 +152,8 @@ func (can *Can) AddTag(name string, tag string) error {
 		return nil
 	}
 
-	item.Metadata.UpdatedAt = time.Now()
-	can.Metadata.UpdatedAt = item.Metadata.UpdatedAt
+	item.Metadata.Updated = time.Now()
+	can.Metadata.Updated = item.Metadata.Updated
 	item.Tags = append(item.Tags, tag)
 	can.Items[name] = item
 
@@ -211,8 +172,8 @@ func (can *Can) DelTag(name string, tag string) error {
 	}
 
 	item.Tags = remove(item.Tags, tag)
-	item.Metadata.UpdatedAt = time.Now()
-	can.Metadata.UpdatedAt = item.Metadata.UpdatedAt
+	item.Metadata.Updated = time.Now()
+	can.Metadata.Updated = item.Metadata.Updated
 	can.Items[name] = item
 
 	return nil

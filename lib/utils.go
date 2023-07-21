@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/jpedro/crypto"
 )
 
 // Splits a text into an aligned column of text
@@ -86,7 +88,7 @@ func getHeaders(text string) (map[string]string, string) {
 }
 
 // Ensures the password is not empty or errors
-func verifyPassword(password string) error {
+func ensurePasswordExists(password string) error {
 	if password == "" {
 		return fmt.Errorf("password cannot be empty")
 	}
@@ -102,4 +104,47 @@ func env(name string, fallback string) string {
 	}
 
 	return value
+}
+
+func Flatten(nested []any) []any {
+	flattened := make([]any, 0)
+
+	for _, v := range nested {
+		switch c := v.(type) {
+		case []any:
+			subArray := Flatten(c)
+			flattened = append(flattened, subArray...)
+		case any:
+			flattened = append(flattened, c)
+		}
+	}
+
+	return flattened
+}
+
+func encrypt(data, password string) (string, error) {
+	encrypted, err := crypto.Encrypt(string(data), password)
+	if err != nil {
+		return "", err
+	}
+
+	return encrypted, nil
+}
+
+func decrypt(data, password string) (string, error) {
+	decrypted, err := crypto.Decrypt(string(data), password)
+	if err != nil {
+		return "", err
+	}
+
+	return decrypted, nil
+}
+
+func strength(value string) int {
+	mod := len(value) / 10
+	if mod < 1 {
+		mod = 1
+	}
+
+	return mod
 }
