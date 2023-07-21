@@ -38,23 +38,36 @@ func initDatabase(file, password string) error {
 		return err
 	}
 
-	queries := []string{
-		`PRAGMA foreign_keys = ON`,
+	// queries := []string{fmt.Sprintf(`
+	schema := fmt.Sprintf(`
+		PRAGMA foreign_keys = ON;
 
-		`DROP TABLE IF EXISTS header`,
-		`CREATE TABLE header (
+		DROP TABLE IF EXISTS header;
+		CREATE TABLE header (
 			name TEXT PRIMARY KEY NOT NULL,
 			value TEXT NOT NULL
-		)`,
-		fmt.Sprintf(`INSERT INTO header (name, value) VALUES
-			("version", "%s"),
-			("algorithm", "%s"),
-			("verification", "%s"),
-			("created", CURRENT_TIMESTAMP)
-		`, VERSION, ALGORITHM, verification),
+		);
 
-		`DROP TABLE IF EXISTS item`,
-		`CREATE TABLE item (
+		DROP TABLE IF EXISTS thing;
+		CREATE TABLE thing (
+			id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+			type TEXT NOT NULL,
+			created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			updated DATETIME
+		);
+
+		DROP TABLE IF EXISTS data;
+		CREATE TABLE data (
+			id INTEGER NOT NULL
+				REFERENCES thing(id)
+				ON DELETE CASCADE,
+			field TEXT NOT NULL,
+			value TEXT,
+			UNIQUE(id, field)
+		);
+
+		DROP TABLE IF EXISTS item;
+		CREATE TABLE item (
 			id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 			type TEXT NOT NULL,
 			ref INTEGER DEFAULT 0,
@@ -64,10 +77,10 @@ func initDatabase(file, password string) error {
 			created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			updated DATETIME,
 			tags TEXT
-		)`,
+		);
 
-		`DROP TABLE IF EXISTS file`,
-		`CREATE TABLE file (
+		DROP TABLE IF EXISTS file;
+		CREATE TABLE file (
 			id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 			type TEXT NOT NULL,
 			name TEXT NOT NULL UNIQUE,
@@ -75,18 +88,18 @@ func initDatabase(file, password string) error {
 			size INTEGER NOT NULL,
 			created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			updated DATETIME
-		)`,
+		);
 
-		`DROP TABLE IF EXISTS tag`,
-		`CREATE TABLE tag (
+		DROP TABLE IF EXISTS tag;
+		CREATE TABLE tag (
 			id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
 			name TEXT NOT NULL UNIQUE,
 			created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			updated DATETIME
-		)`,
+		);
 
-		`DROP TABLE IF EXISTS item_tag`,
-		`CREATE TABLE item_tag (
+		DROP TABLE IF EXISTS item_tag;
+		CREATE TABLE item_tag (
 			item_id TEXT NOT NULL
 				REFERENCES items(id)
 				ON DELETE CASCADE,
@@ -95,20 +108,47 @@ func initDatabase(file, password string) error {
 				ON DELETE CASCADE,
 			created DATETIME NOT NULL,
 			PRIMARY KEY(item_id, tag_id)
-		)`,
-	}
+		);
 
-	for _, query := range queries {
-		res, err2 := db.Exec(query)
-		if err2 != nil {
-			panic(err2)
-		}
-		affected, err3 := res.RowsAffected()
-		if err3 != nil {
-			panic(err3)
-		}
-		fmt.Println("affected:", query, affected)
+		INSERT INTO
+			header
+			(name, value)
+		VALUES
+			("version", "%s"),
+			("algorithm", "%s"),
+			("verification", "%s"),
+			("created", CURRENT_TIMESTAMP)
+		;
+	`,
+		VERSION,
+		ALGORITHM,
+		verification,
+	)
+
+	res, err2 := db.Exec(schema)
+	if err2 != nil {
+		panic(err2)
 	}
+	affected, err3 := res.RowsAffected()
+	if err3 != nil {
+		panic(err3)
+	}
+	fmt.Println("Schema affected:", schema, affected)
+
+	// combined := strings.Join(queries, ";\n")
+	// fmt.Printf("combined: %v\n", combined)
+
+	// for _, query := range queries {
+	// 	res, err2 := db.Exec(query)
+	// 	if err2 != nil {
+	// 		panic(err2)
+	// 	}
+	// 	affected, err3 := res.RowsAffected()
+	// 	if err3 != nil {
+	// 		panic(err3)
+	// 	}
+	// 	fmt.Println("affected:", query, affected)
+	// }
 
 	return nil
 }
